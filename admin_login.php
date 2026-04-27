@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login to FloraMeans Website</title>
+    <title>Login to FloraMeans Website as Admin</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -18,7 +18,7 @@
     <!-- CSS -->
      <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="bg-admin">
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="card-login card shadow-lg overflow-hidden">
             <div class="row align-items-stretch g-0">
@@ -28,24 +28,23 @@
                 <!-- Login -->
                 <div class="col-md-6 d-flex align-items-center">
                     <div class="card-body w-100 p-3 p-md-5">
-                        <h4 class="fw-bold text-center">Selamat Datang di FloraMeans</h4>
-                        <p class="text-muted text-center small ">Masuk untuk mulai menganalisis kebutuhan air tanamanmu</p>
-                        <form action="" method="POST" id="formLogin">
+                        <h4 class="fw-bold text-center">Login Administrator</h4>
+                        <p class="text-muted text-center small ">Gunakan akun admin Anda untuk mengelola data dan memantau sistem FloraMeans</p>
+                        <form action="" method="POST" id="formLoginAdmin">
                             <div class="mb-3">
-                                <label for="inputUsernameUser" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="inputUsernameUser">
+                                <label for="inputUsernameAdmin" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="inputUsernameAdmin">
                             </div>
                             <div class="mb-3">
-                                <label for="inputPasswordUser" class="form-label">Password</label>
+                                <label for="inputPasswordAdmin" class="form-label">Password</label>
                                 <div class="input-group">
-                                    <input type="password" class="form-control" id="inputPasswordUser">
+                                    <input type="password" class="form-control" id="inputPasswordAdmin">
                                     <span class="input-group-text bg-white" id="togglePassword" style="cursor: pointer;">
                                         <i class="bi bi-eye" id="toggleIcon"></i>
                                     </span>
                                 </div>
                             </div>
-                            <p class="mt-3 text-end">Belum punya akun? <a href="registrasi.php" class="text-decoration-none ">Daftar</a></p>
-                            <button type="submit" class="btn w-100 btn-login ">Login</button>
+                            <button type="submit" class="btn w-100 btn-login-admin ">Login</button>
                         </form>
                     </div>
                  </div>
@@ -56,7 +55,7 @@
     <script>
         const togglePassword = document.querySelector('#togglePassword');
         const toggleIcon = document.querySelector('#toggleIcon');
-        const passwordField = document.querySelector('#inputPasswordUser');
+        const passwordField = document.querySelector('#inputPasswordAdmin');
 
         togglePassword.addEventListener('click', function () {
             const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -66,11 +65,11 @@
             toggleIcon.classList.toggle('bi-eye-slash');
         });
 
-        document.getElementById('formLogin').addEventListener('submit', function(e) {
+        document.getElementById('formLoginAdmin').addEventListener('submit', function(e) {
         e.preventDefault(); // Menahan refresh halaman
 
-        let username = document.getElementById('inputUsernameUser').value;
-        let password = document.getElementById('inputPasswordUser').value;
+        let username = document.getElementById('inputUsernameAdmin').value;
+        let password = document.getElementById('inputPasswordAdmin').value;
 
         if (username === "" || password === "") { 
             Swal.fire({
@@ -82,7 +81,7 @@
         } 
         // Kirim data ke PHP menggunakan Fetch API
         let formData = new FormData();
-        formData.append('action', 'login');
+        formData.append('action', 'loginAdmin');
         formData.append('username', username);
         formData.append('password', password);
 
@@ -96,23 +95,23 @@
                 Swal.fire({
                     icon: "success",
                     title: "Berhasil!",
-                    text: "Selamat datang kembali di FloraMeans.",
+                    text: "Selamat datang kembali, Admin FloraMeans.",
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
-                    window.location.href = "dashboard_user.php"; // Pindah ke halaman utama
+                    window.location.href = "dashboard_admin.php"; // Pindah ke halaman utama
                 });
             } else if (data.status === 'wrong_password') {
                 Swal.fire({
                     icon: "error",
                     title: "Login Gagal...",
-                    text: "Password yang kamu masukkan salah."
+                    text: "Password Admin yang kamu masukkan salah."
                 });
             } else if (data.status === 'not_found') {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "Akun ini belum terdaftar di sistem kami."
+                    text: "Akun Administrator tidak ditemukan."
                 });
             }
         })

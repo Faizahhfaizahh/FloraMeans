@@ -1,10 +1,14 @@
 body {
             font-family: 'Poppins', sans-serif;
-            background-color: #e8f5e9; /* Hijau sangat muda */
+            background-color: #e8f5e9; 
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+/*LOGIN DAN REGISTRASI ADMIN USER*/
+        .bg-admin{
+            background-color: #f8fafc;
         }
 
         .card-login {
@@ -26,5 +30,23 @@ body {
         }
         .btn-login:hover {
             background-color: #27ae60;
+            color: white;
+        }
+        .bg-admin .img-login {
+
+            filter: brightness(0.6) sepia(0.5) hue-rotate(120deg); 
+        }
+
+        .btn-login-admin {
+            background-color: #064e3b;
+            border: none;
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .btn-login-admin:hover {
+            background-color: #08634b;
             color: white;
         }
