@@ -1,0 +1,30 @@
+body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #e8f5e9; /* Hijau sangat muda */
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-login {
+            max-width: 950px;
+        }
+
+        .img-login{
+            object-fit: cover;
+        }
+
+        .btn-login {
+            background-color: #2ecc71;
+            border: none;
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .btn-login:hover {
+            background-color: #27ae60;
+            color: white;
+        }
