@@ -18,41 +18,42 @@
     <!-- CSS -->
      <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="card-login card shadow-lg overflow-hidden">
-            <div class="row align-items-stretch g-0">
-                <div class="col-md-6">
-                    <img src="images/img_bg2.png" alt="background" class="img-login img-fluid w-100 h-100">
-                </div>
-                <!-- Login -->
-                <div class="col-md-6 d-flex align-items-center">
-                    <div class="card-body w-100 p-3 p-md-5">
-                        <h4 class="fw-bold text-center">Selamat Datang di FloraMeans</h4>
-                        <p class="text-muted text-center small ">Masuk untuk mulai menganalisis kebutuhan air tanamanmu</p>
-                        <form action="" method="POST" id="formLogin">
-                            <div class="mb-3">
-                                <label for="inputUsernameUser" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="inputUsernameUser">
-                            </div>
-                            <div class="mb-3">
-                                <label for="inputPasswordUser" class="form-label">Password</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" id="inputPasswordUser">
-                                    <span class="input-group-text bg-white" id="togglePassword" style="cursor: pointer;">
-                                        <i class="bi bi-eye" id="toggleIcon"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <p class="mt-3 text-end">Belum punya akun? <a href="registrasi.php" class="text-decoration-none ">Daftar</a></p>
-                            <button type="submit" class="btn w-100 btn-login ">Login</button>
-                        </form>
+<body class="bg-user-theme">
+    <div class="auth-wrapper">
+        <div class="container d-flex justify-content-center align-items-center vh-100">
+            <div class="card-login card shadow-lg overflow-hidden">
+                <div class="row align-items-stretch g-0">
+                    <div class="col-md-6">
+                        <img src="images/img_bg2.png" alt="background" class="img-login img-fluid w-100 h-100">
                     </div>
-                 </div>
+                    <!-- Login -->
+                    <div class="col-md-6 d-flex align-items-center">
+                        <div class="card-body w-100 p-3 p-md-5">
+                            <h4 class="fw-bold text-center">Selamat Datang di FloraMeans</h4>
+                            <p class="text-muted text-center small ">Masuk untuk mulai menganalisis kebutuhan air tanamanmu</p>
+                            <form action="" method="POST" id="formLogin">
+                                <div class="mb-3">
+                                    <label for="inputUsernameUser" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="inputUsernameUser">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="inputPasswordUser" class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="inputPasswordUser">
+                                        <span class="input-group-text bg-white" id="togglePassword" style="cursor: pointer;">
+                                            <i class="bi bi-eye" id="toggleIcon"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <p class="mt-3 text-end">Belum punya akun? <a href="registrasi.php" class="text-decoration-none ">Daftar</a></p>
+                                <button type="submit" class="btn w-100 btn-login ">Login</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
     <script>
         const togglePassword = document.querySelector('#togglePassword');
         const toggleIcon = document.querySelector('#toggleIcon');
