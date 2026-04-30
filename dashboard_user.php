@@ -33,8 +33,8 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto gap-lg-2">
-                    <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Cek Kebutuhan Air</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="dashbaord_user.php">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cek_kebutuhan_air.php">Cek Kebutuhan Air</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Riwayat Clustering</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Profil</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Logout</a></li>

@@ -1,9 +1,9 @@
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #F5F5F5;
-            margin: 0;
-            padding: 0;
-        }
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #F5F5F5;
+    margin: 0;
+    padding: 0;
+}
 /*LOGIN DAN REGISTRASI ADMIN USER*/
         .auth-wrapper {
             display: flex;
@@ -60,5 +60,9 @@
             background-color: #08634b;
             color: white;
         }
+/* DASHBOARD USER */
+/* CEK KEBUTUHAN AIR */
+
+    
 
         
