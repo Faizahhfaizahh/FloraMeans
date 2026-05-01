@@ -110,28 +110,28 @@
                                         <label class="form-label small fw-bold text-muted text-uppercase">Suhu Udara (°C)</label>
                                         <div class="input-group shadow-sm rounded-3">
                                             <span class="input-group-text bg-white border-end-0 "><i class="bi bi-thermometer-half"></i></span>
-                                            <input type="number" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="suhu" placeholder="30.00" required>
+                                            <input type="number" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="suhu_input" placeholder="30.00" required>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 mb-2">
                                         <label class="form-label small fw-bold text-muted text-uppercase">Intensitas Cahaya (Lux)</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-white border-end-0"><i class="bi bi-sun"></i></span>
-                                            <input type="number" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="cahaya" placeholder="20000" required>
+                                            <input type="number" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="cahaya_input" placeholder="20000" required>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 mb-2">
                                         <label class="form-label small fw-bold text-muted text-uppercase">Kelembapan Udara (%)</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-white border-end-0"><i class="bi bi-wind"></i></span>
-                                            <input type="number" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="lembap_udara" placeholder="60.0" required>
+                                            <input type="number" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="lembab_udara_input" placeholder="60.0" required>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 mb-2">
                                         <label class="form-label small fw-bold text-muted text-uppercase">Kelembapan Tanah (%)</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-white border-end-0"><i class="bi bi-moisture"></i></span>
-                                            <input type="number" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="lembap_tanah" placeholder="45.0" required>
+                                            <input type="number" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="lembab_tanah_input" placeholder="45.0" required>
                                         </div>
                                     </div>
                                 </div>
