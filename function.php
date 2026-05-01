@@ -15,7 +15,9 @@ if ($action === 'login') {
         $row = mysqli_fetch_assoc($result);
         
         if ($password === $row['password']) {
+            $_SESSION['id_user'] = $row['id_user'];
             $_SESSION['username'] = $row['username'];
+            $_SESSION['role'] = 'user'; //Menambahkan role
             echo json_encode(['status' => 'success']);
         } else {
             echo json_encode(['status' => 'wrong_password']);
@@ -54,12 +56,14 @@ else if ($action === 'register') {
     }
 }
 
-// ========LOGIN=======
+// ========LOGIN ADMIN=======
 else if ($action === 'loginAdmin') {
     $result = mysqli_query($conn, "SELECT * FROM admin WHERE username = '$username'");
     if ($row = mysqli_fetch_assoc($result)) {
         if ($password === $row['password']) {
+            $_SESSION['id_admin'] = $row['id_admin'];
             $_SESSION['admin_username'] = $row['username'];
+            $_SESSION['role'] = 'admin';
             echo json_encode(['status' => 'success']);
         } else {
             echo json_encode(['status' => 'wrong_password']);
