@@ -66,6 +66,11 @@ $current_username = $_SESSION['username'];
             background-color: #27ae60;
             color: white;
         }
+        ::placeholder {
+            font-size: 0.85rem; 
+            opacity: 0.5 !important; 
+            font-weight: 400;
+        }
     </style>
 
 </head>
