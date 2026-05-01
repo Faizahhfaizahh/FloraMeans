@@ -68,4 +68,33 @@ else if ($action === 'loginAdmin') {
         echo json_encode(['status' => 'not_found']);
     }
 }
+
+//==========UPDATE PROFILE==========
+else if ($action === 'updateProfile') {
+    if (!isset($_SESSION['username'])){
+        echo json_encode(['status' => 'not_logged_in']);
+        exit;
+    }
+    $current_username = $_SESSION['username'];
+    $new_username = mysqli_real_escape_string($conn, $_POST['username']);
+    $new_password = $_POST['password'];
+    //Cek apakah ganti password baru atau ganti username saja
+    if (!empty($new_password)) {
+        if (strlen($new_password) < 8 || !preg_match('/[0-9]/', $new_password) || !preg_match('/[A-Za-z]/', $new_password)) {
+            echo json_encode(['status' => 'password_tidak_valid']);
+            exit;
+        }
+        $query = "UPDATE user SET username='$new_username', password='$new_password' WHERE username='$current_username'";
+    } else {
+        $query = "UPDATE user SET username='$new_username' WHERE username='$current_username'";
+    }
+
+    if (mysqli_query($conn, $query)) {
+        $_SESSION['username'] = $new_username; // Update session dengan username baru
+        echo json_encode(['status' => 'success']);
+    } else {
+        echo json_encode(['status' => 'error']);
+    }
+}
+
 ?>
