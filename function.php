@@ -101,4 +101,21 @@ else if ($action === 'updateProfile') {
     }
 }
 
+/*===========TAMBAH KATEGORI===========*/
+if (isset($_POST['btn_simpan_kategori'])) {
+    $nama_kategori = mysqli_real_escape_string($conn, $_POST['nama_kategori']);
+
+    $cek = mysqli_query($conn, "SELECT * FROM kategori WHERE nama_kategori = '$nama_kategori'");
+    if (mysqli_num_rows($cek) > 0) {
+        header("Location: kelola_kategori.php?pesan=duplikat");
+    } else {
+        $query = mysqli_query($conn, "INSERT INTO kategori (nama_kategori) VALUES ('$nama_kategori')");
+        if ($query) {
+            header("Location: kelola_kategori.php?pesan=sukses_tambah");
+        } else {
+            header("Location: kelola_kategori.php?pesan=gagal");
+        }
+    }
+}
+
 ?>

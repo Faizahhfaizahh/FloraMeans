@@ -92,7 +92,7 @@
 
             <ul class="list-unstyled components">
                 <li><a href="dashboard_admin.php" class="active"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li>
-                <li><a href="kelola_kategori.php"><i class="bi bi-tags-fill"></i> Kategori Air</a></li>
+                <li><a href="kelola_kategori.php"><i class="bi bi-tags-fill"></i> Kategori</a></li>
                 <li><a href="data_referensi_tanaman.php"><i class="bi bi-tree-fill"></i> Daftar Tanaman</a></li>
                 <li><a href="standarisasi_lingkungan.php"><i class="bi bi-sliders"></i> Parameter</a></li>
                 <li><a href="daftar_pengguna.php"><i class="bi bi-people-fill"></i> Daftar Pengguna</a></li>
