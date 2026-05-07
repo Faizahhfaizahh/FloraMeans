@@ -120,7 +120,7 @@
         formData.append('username', username);
         formData.append('password', password);
 
-        fetch('function.php', {
+        fetch('auth.php', {
             method: 'POST',
             body: formData
         })

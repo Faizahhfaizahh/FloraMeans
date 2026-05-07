@@ -83,11 +83,11 @@
         } 
         // Kirim data ke PHP menggunakan Fetch API
         let formData = new FormData();
-        formData.append('action', 'login');
+        formData.append('action', 'loginUser');
         formData.append('username', username);
         formData.append('password', password);
 
-        fetch('function.php', {
+        fetch('auth.php', {
             method: 'POST',
             body: formData
         })
