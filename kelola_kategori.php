@@ -14,7 +14,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard User FloraMeans</title>
+    <title>Manage Categories</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -82,8 +82,7 @@
     }
 
     .card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .btn-primary { background-color: #064e3b; border: none; }
-    .btn-primary:hover { background-color: #043d2e; }
+
 
     /* Responsive Mobile */
     @media (max-width: 768px) {
@@ -143,7 +142,13 @@
                                     <td class="px-3"><?= $no++;?></td>
                                     <td class="fw-medium text-dark"><?= $row['nama_kategori'];?></td>
                                     <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-warning me-1"><i class="bi bi-pencil-square"></i></button>
+                                        <button class="btn btn-sm btn-outline-warning me-1 btn-edit" 
+                                            data-id="<?= $row['id_kategori'];?>" 
+                                            data-nama="<?= $row['nama_kategori'];?>"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalEdit">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
                                         <button class="btn btn-sm btn-outline-danger btn-delete" data-id="<?= $row['id_kategori'];?>"><i class="bi bi-trash"></i></button>
                                     </td>
                                 </tr>
@@ -158,7 +163,7 @@
     </div>
 
     <!-- Modal Tambah Kategori -->
-    <div class="modal fade" id="modalTambah" tabindex="-1">
+    <div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header border-0 bg-light">
@@ -169,16 +174,42 @@
                     <div class="modal-body p-4">
                         <div class="mb-3">
                             <label class="form-label">Nama Kategori</label>
-                            <input type="text" class="form-control border-0 bg-light py-2" name="nama_kategori" placeholder="Contoh: Xerofit" required>
+                            <input type="text" class="form-control bg-light py-2" name="nama_kategori" placeholder="Contoh: Xerofit" required>
                         </div>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer border-0">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" name="btn_simpan_kategori"class="btn btn-primary">Simpan</button>
+                        <button type="submit" name="btn_simpan_kategori" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>
         </div>
+    </div>
+
+    <!-- Modal Edit Kategori -->
+    <div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-0 bg-light">
+                    <h5 class="modal-title fw-bold">Edit Kategori</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="kategori_controller.php" method="POST">
+                    <div class="modal-body p-4">
+                        <input type="hidden" name="id_kategori" id="edit_id">
+                        <div class="mb-3">
+                            <label class="form-label">Nama Kategori</label>
+                            <input type="text" class="form-control  bg-light py-2" name="nama_kategori" id="edit_nama" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" name="btn_edit_kategori" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
         
     <script>
 
@@ -238,6 +269,22 @@
                 });
             });
         });
+
+        // Mengisi data ke modal edit saat tombol diklik
+        document.querySelectorAll('.btn-edit').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const nama = this.getAttribute('data-nama');
+
+                document.getElementById('edit_id').value = id;
+                document.getElementById('edit_nama').value = nama;
+            });
+        });
+
+        if (pesan === 'sukses_edit') {
+            Swal.fire('Berhasil!', 'Kategori telah diperbarui.', 'success');
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
 
         document.getElementById('sidebarCollapse')?.addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('active');
