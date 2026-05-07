@@ -1,8 +1,14 @@
 <?php
-    include 'koneksi.php';
-    //Ambil data dari database
-    $query = mysqli_query($conn, "SELECT * FROM kategori");
+    require_once 'auth.php';               
+    require_once 'kategori_controller.php'; 
+
+    Auth::cekLoginAdmin(); 
+
+    // Membuat objek 
+    $katObj = new Kategori();
+    $dataKategori = $katObj->tampilSemua(); 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -131,14 +137,14 @@
                             <tbody>
                                 <?php
                                 $no =1;
-                                while ($row = mysqli_fetch_assoc($query)):
+                                while ($row = mysqli_fetch_assoc($dataKategori)):
                                 ?>
                                 <tr>
                                     <td class="px-3"><?= $no++;?></td>
                                     <td class="fw-medium text-dark"><?= $row['nama_kategori'];?></td>
                                     <td class="text-center">
                                         <button class="btn btn-sm btn-outline-warning me-1"><i class="bi bi-pencil-square"></i></button>
-                                        <button class="btn btn-sm btn-outline-danger btn-delete"><i class="bi bi-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="<?= $row['id_kategori'];?>"><i class="bi bi-trash"></i></button>
                                     </td>
                                 </tr>
                                     <?php endwhile; ?>
@@ -159,7 +165,7 @@
                     <h5 class="modal-title fw-bold">Tambah Kategori Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form action="function.php" method="POST">
+                <form action="kategori_controller.php" method="POST">
                     <div class="modal-body p-4">
                         <div class="mb-3">
                             <label class="form-label">Nama Kategori</label>
@@ -185,7 +191,7 @@
                 title: 'Berhasil!',
                 text: 'Kategori baru telah ditambahkan ke sistem FloraMeans.',
                 icon: 'success',
-                confirmButtonColor: '#064e3b' // Warna tema hijau sidebar kamu
+                confirmButtonColor: '#064e3b' 
             }).then(() => {
                 // Bersihkan parameter URL agar alert tidak muncul lagi saat refresh
                 window.history.replaceState({}, document.title, window.location.pathname);
@@ -201,9 +207,22 @@
         });
     }
 
+    if (pesan === 'sukses_hapus') {
+        Swal.fire({
+            title: 'Berhasil!',
+            text: 'Kategori telah berhasil dihapus.',
+            icon: 'success',
+            confirmButtonColor: '#064e3b' 
+        }).then(() => {
+            // Bersihkan parameter URL agar alert tidak muncul lagi saat refresh
+            window.history.replaceState({}, document.title, window.location.pathname);
+        });
+    }
+
         // Untuk hapus kategori
         document.querySelectorAll('.btn-delete').forEach(btn => {
             btn.addEventListener('click', function() {
+                const id_kategori = this.getAttribute('data-id'); // Mengambil id dari tombol
                 Swal.fire({
                     title: 'Hapus Kategori?',
                     text: "Data yang dihapus tidak bisa dikembalikan!",
@@ -214,7 +233,7 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Swal.fire('Terhapus!', 'Kategori telah dihapus.', 'success');
+                        window.location.href = `kategori_controller.php?action=hapus&id_kategori=${id_kategori}`;
                     }
                 });
             });
