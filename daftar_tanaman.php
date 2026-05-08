@@ -1,12 +1,26 @@
 <?php
     require_once 'auth.php';               
+    require_once 'tanaman_controller.php'; 
     require_once 'kategori_controller.php'; 
 
     Auth::cekLoginAdmin(); 
 
-    // Membuat objek 
+    $tanamanObj = new Tanaman();
+    
+    if (isset($_GET['search']) && !empty($_GET['search'])) {
+        $keyword = $_GET['search'];
+        $dataTanaman = $tanamanObj->cari($keyword); 
+    } else {
+        $dataTanaman = $tanamanObj->tampilSemua(); 
+    }
+
     $katObj = new Kategori();
-    $dataKategori = $katObj->tampilSemua(); 
+    $dataKategori = $katObj->tampilSemua();
+    
+    $listKategori = []; 
+    while($rowKat = mysqli_fetch_assoc($dataKategori)) {
+        $listKategori[] = $rowKat;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +28,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Categories</title>
+    <title>Manage Flora List</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -103,8 +117,8 @@
 
             <ul class="list-unstyled">
                 <li><a href="dashboard_admin.php"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li>
-                <li><a href="kelola_kategori.php" class="active"><i class="bi bi-tags-fill"></i> Kategori</a></li>
-                <li><a href="daftar_tanaman.php"><i class="bi bi-tree-fill"></i> Daftar Tanaman</a></li>
+                <li><a href="kelola_kategori.php"><i class="bi bi-tags-fill"></i> Kategori</a></li>
+                <li><a href="data_referensi_tanaman.php" class="active"><i class="bi bi-tree-fill"></i> Daftar Tanaman</a></li>
                 <li><a href="standarisasi_lingkungan.php"><i class="bi bi-sliders"></i> Parameter</a></li>
                 <li><a href="daftar_pengguna.php"><i class="bi bi-people-fill"></i> Daftar Pengguna</a></li>
                 <li><a href="riwayat_clustering.php"><i class="bi bi-clock-history"></i> Riwayat Clustering</a></li>
@@ -117,9 +131,28 @@
                 <div class="container-box">
                     <div class="d-flex justify-content-between align-items-end mb-4">
                         <div>
-                            <h4 class="fw-bold m-0 text-dark">Kelola Kategori</h4>
+                            <h4 class="fw-bold m-0 text-dark">Daftar Referensi Tanaman</h4>
                         </div>
-                        <button class="btn btn-success shadow-sm px-4" data-bs-toggle="modal" data-bs-target="#modalTambah">Tambah Kategori</button>
+                        <button class="btn btn-success shadow-sm px-4" data-bs-toggle="modal" data-bs-target="#modalTambah">Tambah tanaman</button>
+                    </div>
+                </div>
+                <!-- Search Bar -->
+                <div class="row mb-3">
+                    <div class="col-md-4 ms-auto">
+                        <form action="" method="GET">
+                            <div class="input-group shadow-sm border" style="border-radius: 8px; background-color: white;">
+                                <span class="input-group-text bg-white border-0 pe-1">
+                                    <i class="bi bi-search text-muted"></i>
+                                </span>
+                                
+                                <input type="text" 
+                                    class="form-control border-0 ps-2" 
+                                    name="search" 
+                                    placeholder="Cari nama atau sinonim..."
+                                    value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
+                                    style="box-shadow: none; background: transparent; height: 45px;"> 
+                            </div>
+                        </form>
                     </div>
                 </div>
 
@@ -129,35 +162,44 @@
                             <thead class="table-light">
                                 <tr>
                                     <th class="py-3 px-3">No</th>
-                                    <th class="py-3">Nama Kategori</th>
+                                    <th class="py-3">Nama Tanaman</th>
+                                    <th class="py-3">Sinonim (Nama Lain Tanaman)</th>
+                                    <th class="py-3">Kategori</th>
                                     <th class=" py-3 text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                 $no =1;
-                                if (mysqli_num_rows($dataKategori) > 0 ){
-                                    while ($row = mysqli_fetch_assoc($dataKategori)):
+                                if (mysqli_num_rows($dataTanaman) > 0 ){
+                                    while ($row = mysqli_fetch_assoc($dataTanaman)):
                                 ?>
                                 <tr>
                                     <td class="px-3"><?= $no++;?></td>
+                                    <td class="fw-medium text-dark"><?= $row['nama_tanaman'];?></td>
+                                    <td class="fw-medium text-dark">
+                                        <?= !empty($row['sinonim']) ? $row['sinonim'] : '<span class="text-muted small"><em>-</em></span>'; ?>
+                                    </td>
                                     <td class="fw-medium text-dark"><?= $row['nama_kategori'];?></td>
                                     <td class="text-center">
                                         <button class="btn btn-sm btn-outline-warning me-1 btn-edit" 
-                                            data-id="<?= $row['id_kategori'];?>" 
-                                            data-nama="<?= $row['nama_kategori'];?>"
+                                            data-id="<?= $row['id_tanaman'];?>" 
+                                            data-nama="<?= $row['nama_tanaman'];?>"
+                                            data-sinonim="<?= $row['sinonim'];?>"
+                                            data-edit-kategori="<?= $row['id_kategori'];?>"
                                             data-bs-toggle="modal"
                                             data-bs-target="#modalEdit">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="<?= $row['id_kategori'];?>"><i class="bi bi-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="<?= $row['id_tanaman'];?>"><i class="bi bi-trash"></i></button>
                                     </td>
                                 </tr>
                                 <?php 
-                                    endwhile; 
-                                    } else {
-                                        echo '<tr><td colspan="5" class="text-center py-5 text-muted italic">Belum ada data kategori yang dimasukkan.</td></tr>';
-                                    }?>
+                                    endwhile;
+                                } else {
+                                    echo '<tr><td colspan="5" class="text-center py-5 text-muted italic">Belum ada data tanaman yang terdaftar.</td></tr>';
+                                }
+                                ?>
                                 </tbody>
                             </table>
                         </div>
@@ -167,49 +209,97 @@
         </main>
     </div>
 
-    <!-- Modal Tambah Kategori -->
+    <!-- Modal Tambah Tanaman -->
     <div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header border-0 bg-light">
-                    <h5 class="modal-title fw-bold">Tambah Kategori Baru</h5>
+                    <h5 class="modal-title fw-bold">Tambah Tanaman Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form action="kategori_controller.php" method="POST">
+                <form action="tanaman_controller.php" method="POST">
                     <div class="modal-body p-4">
                         <div class="mb-3">
-                            <label class="form-label">Nama Kategori</label>
-                            <input type="text" class="form-control bg-light py-2" name="nama_kategori" placeholder="Contoh: Xerofit" required>
+                            <label class="form-label">Nama Tanaman</label>
+                            <input type="text" class="form-control bg-light py-2" name="nama_tanaman" placeholder="Contoh: Lidah Buaya" required>
+                        </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="form-label">Sinonim (Nama Lain Tanaman)</label>
+                            <span class="text-muted small">Opsional</span> </div>
+                        
+                        <input type="text" 
+                            class="form-control bg-light py-2" 
+                            name="sinonim" 
+                            id="tambah_sinonim" 
+                            placeholder="Contoh: Aloe Vera, Jadam, Lidah Naga"> <div class="form-text mt-1 text-secondary" style="font-size: 0.8rem;">
+                            <i class="bi bi-info-circle me-1"></i> 
+                            Gunakan koma ( , ) sebagai pemisah nama.
+                        </div> 
+                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kategori</label>
+                            <select name="id_kategori" class="form-select bg-light py-2" required>
+                                <option value="" selected disabled>-- Pilih Kategori --</option>
+                                <?php foreach($listKategori as $k): ?>
+                                    <option value="<?= $k['id_kategori']; ?>"><?= $k['nama_kategori']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer border-0">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" name="btn_simpan_kategori" class="btn btn-primary">Simpan</button>
+                        <button type="submit" name="btn_simpan_tanaman" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal Edit Kategori -->
+    <!-- Modal Edit Tanaman -->
     <div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header border-0 bg-light">
-                    <h5 class="modal-title fw-bold">Edit Kategori</h5>
+                    <h5 class="modal-title fw-bold">Edit Tanaman</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form action="kategori_controller.php" method="POST">
+                <form action="tanaman_controller.php" method="POST">
                     <div class="modal-body p-4">
-                        <input type="hidden" name="id_kategori" id="edit_id">
+                        <input type="hidden" name="id_tanaman" id="edit_id">
                         <div class="mb-3">
-                            <label class="form-label">Nama Kategori</label>
-                            <input type="text" class="form-control  bg-light py-2" name="nama_kategori" id="edit_nama" required>
+                            <label class="form-label">Nama Tanaman</label>
+                            <input type="text" class="form-control  bg-light py-2" name="nama_tanaman" id="edit_nama" required>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="form-label fw-bold">Sinonim (Nama Lain Tanaman)</label>
+                                <span class="text-muted small">Opsional</span>
+                            </div>
+
+                            <input type="text" 
+                                class="form-control bg-light py-2" 
+                                name="sinonim" 
+                                id="edit_sinonim">
+                            
+                            <div class="form-text mt-1 text-secondary" style="font-size: 0.8rem;">
+                                <i class="bi bi-info-circle me-1"></i> 
+                                Gunakan koma ( , ) sebagai pemisah nama.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kategori</label>
+                            <select name="id_kategori" id="edit_kategori" class="form-select bg-light py-2" required>
+                                <option value="">-- Pilih Kategori --</option>
+                                <?php foreach($listKategori as $k): ?>
+                                    <option value="<?= $k['id_kategori']; ?>"><?= $k['nama_kategori']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer border-0">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" name="btn_edit_kategori" class="btn btn-primary">Simpan Perubahan</button>
+                        <button type="submit" name="btn_edit_tanaman" class="btn btn-primary">Simpan Perubahan</button>
                     </div>
                 </form>
             </div>
@@ -217,15 +307,14 @@
     </div>
         
     <script>
-
         const urlParams = new URLSearchParams(window.location.search);
         const pesan = urlParams.get('pesan');
 
-        // Notifikasi tambah kategori berhasil
+        // Notifikasi tambah tanaman berhasil
         if (pesan === 'sukses_tambah') {
             Swal.fire({
                 title: 'Berhasil!',
-                text: 'Kategori baru telah ditambahkan ke sistem FloraMeans.',
+                text: 'Tanaman berhasil ditambahkan',
                 icon: 'success',
                 confirmButtonColor: '#064e3b' 
             }).then(() => {
@@ -237,7 +326,7 @@
         if (pesan === 'duplikat') {
         Swal.fire({
             title: 'Gagal!',
-            text: 'Nama kategori tersebut sudah terdaftar di database.',
+            text: 'Nama tanaman tersebut sudah terdaftar di database.',
             icon: 'error',
             confirmButtonColor: '#d33'
         });
@@ -246,7 +335,7 @@
     if (pesan === 'sukses_hapus') {
         Swal.fire({
             title: 'Berhasil!',
-            text: 'Kategori telah berhasil dihapus.',
+            text: 'Tanaman telah berhasil dihapus.',
             icon: 'success',
             confirmButtonColor: '#064e3b' 
         }).then(() => {
@@ -255,12 +344,12 @@
         });
     }
 
-        // Untuk hapus kategori
+        // Untuk hapus tanaman
         document.querySelectorAll('.btn-delete').forEach(btn => {
             btn.addEventListener('click', function() {
-                const id_kategori = this.getAttribute('data-id'); // Mengambil id dari tombol
+                const id_tanaman = this.getAttribute('data-id'); // Mengambil id dari tombol
                 Swal.fire({
-                    title: 'Hapus Kategori?',
+                    title: 'Hapus Tanaman?',
                     text: "Data yang dihapus tidak bisa dikembalikan!",
                     icon: 'warning',
                     showCancelButton: true,
@@ -269,7 +358,7 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = `kategori_controller.php?action=hapus&id_kategori=${id_kategori}`;
+                        window.location.href = `tanaman_controller.php?action=hapus&id_tanaman=${id_tanaman}`;
                     }
                 });
             });
@@ -280,9 +369,22 @@
             btn.addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
                 const nama = this.getAttribute('data-nama');
+                const sinonim = this.getAttribute('data-sinonim');
+                const kategori = this.getAttribute('data-edit-kategori');
 
                 document.getElementById('edit_id').value = id;
                 document.getElementById('edit_nama').value = nama;
+                document.getElementById('edit_kategori').value = kategori;
+
+                const inputSinonim = document.getElementById('edit_sinonim');
+                if (!sinonim || sinonim.trim() === "") {
+                    inputSinonim.value = ""; //Kosong agar admin bisa mengetik
+                    inputSinonim.placeholder = "Belum ada sinonim"; 
+                } else {
+                    inputSinonim.value = sinonim;
+                    inputSinonim.placeholder = "Contoh: Aloe Vera, Jadam";
+                }
+
             });
         });
 

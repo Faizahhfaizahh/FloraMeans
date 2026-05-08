@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 23 Apr 2026 pada 19.10
+-- Waktu pembuatan: 08 Bulan Mei 2026 pada 03.45
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -33,6 +33,13 @@ CREATE TABLE `admin` (
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data untuk tabel `admin`
+--
+
+INSERT INTO `admin` (`id_admin`, `username`, `password`) VALUES
+(1, 'admin', '0192023a7bbd73250516f069df18b500');
+
 -- --------------------------------------------------------
 
 --
@@ -47,6 +54,16 @@ CREATE TABLE `kategori` (
   `lembab_udara_pusat` double NOT NULL,
   `lembab_tanah_pusat` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `kategori`
+--
+
+INSERT INTO `kategori` (`id_kategori`, `nama_kategori`, `suhu_pusat`, `cahaya_pusat`, `lembab_udara_pusat`, `lembab_tanah_pusat`) VALUES
+(3, 'Mesofit', 0, 0, 0, 0),
+(4, 'Xerofit', 0, 0, 0, 0),
+(5, 'Hidrofit', 0, 0, 0, 0),
+(6, 'Higrofit', 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -76,6 +93,7 @@ CREATE TABLE `simulasi` (
 CREATE TABLE `tanaman` (
   `id_tanaman` int(11) NOT NULL,
   `nama_tanaman` varchar(50) NOT NULL,
+  `sinonim` text NOT NULL,
   `id_kategori` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -90,6 +108,15 @@ CREATE TABLE `user` (
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `user`
+--
+
+INSERT INTO `user` (`id_user`, `username`, `password`) VALUES
+(1, 'faizah ', '4c51299eb62065be9961ebe031f53053'),
+(2, 'flora', 'b189fbf353f7abc4d3c5cd4f9163960f'),
+(3, 'taro', 'afd49503a8d7c8c746e4018dad6e4f64');
 
 --
 -- Indexes for dumped tables
@@ -133,13 +160,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `simulasi`
@@ -157,7 +184,7 @@ ALTER TABLE `tanaman`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
