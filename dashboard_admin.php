@@ -84,49 +84,11 @@
 </head>
 <body>
     <div class="d-flex">
-        <nav id="sidebar" class="shadow">
-            <div class="sidebar-header d-flex align-items-center">
-                <img src="images/logo/FloraMeans_Logo4.png" alt="Logo" width="30" height="30" class="me-2">
-                <h5 class="m-0 fw-bold">FloraMeans</h5>
-            </div>
-
-            <ul class="list-unstyled components">
-                <li><a href="dashboard_admin.php" class="active"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li>
-                <li><a href="kelola_kategori.php"><i class="bi bi-tags-fill"></i> Kategori</a></li>
-                <li><a href="data_referensi_tanaman.php"><i class="bi bi-tree-fill"></i> Daftar Tanaman</a></li>
-                <li><a href="standarisasi_lingkungan.php"><i class="bi bi-sliders"></i> Parameter</a></li>
-                <li><a href="daftar_pengguna.php"><i class="bi bi-people-fill"></i> Daftar Pengguna</a></li>
-                <li><a href="riwayat_clustering.php"><i class="bi bi-clock-history"></i> Riwayat Clustering</a></li>
-                <li><a href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
-            </ul>
-        </nav>
+        <?php include 'sidebar.php'; ?> 
 
         
     <script>
-        document.getElementById('sidebarCollapse')?.addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('active');
-        });
 
-        //Untuk Logout
-        const logoutBtn = document.querySelector('a[href="logout.php"]');
-        logoutBtn.addEventListener('click', function(e) {
-        e.preventDefault(); 
-            
-        Swal.fire({
-            title: 'Konfirmasi Log Out',
-            text: "Apakah Anda yakin ingin keluar dari sistem?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6', 
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, Keluar',
-            cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = 'logout.php'; 
-                }
-            });
-        });
     </script>
 </body>
 </html>

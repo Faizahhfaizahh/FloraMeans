@@ -2,6 +2,7 @@
     require_once 'auth.php';               
     require_once 'tanaman_controller.php'; 
     require_once 'kategori_controller.php'; 
+    require_once 'viewHelper.php';
 
     Auth::cekLoginAdmin(); 
 
@@ -109,52 +110,14 @@
 </head>
 <body>
     <div class="d-flex">
-        <nav id="sidebar" class="shadow">
-            <div class="sidebar-header d-flex align-items-center">
-                <img src="images/logo/FloraMeans_Logo4.png" alt="Logo" width="30" height="30" class="me-2">
-                <h5 class="m-0 fw-bold">FloraMeans</h5>
-            </div>
-
-            <ul class="list-unstyled">
-                <li><a href="dashboard_admin.php"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li>
-                <li><a href="kelola_kategori.php"><i class="bi bi-tags-fill"></i> Kategori</a></li>
-                <li><a href="data_referensi_tanaman.php" class="active"><i class="bi bi-tree-fill"></i> Daftar Tanaman</a></li>
-                <li><a href="standarisasi_lingkungan.php"><i class="bi bi-sliders"></i> Parameter</a></li>
-                <li><a href="daftar_pengguna.php"><i class="bi bi-people-fill"></i> Daftar Pengguna</a></li>
-                <li><a href="riwayat_clustering.php"><i class="bi bi-clock-history"></i> Riwayat Clustering</a></li>
-                <li><a href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
-            </ul>
-        </nav>
+         <?php include 'sidebar.php'; ?> 
 
         <main id="main-content">
             <div class="container-fluid p-4 p-md-5">
-                <div class="container-box">
-                    <div class="d-flex justify-content-between align-items-end mb-4">
-                        <div>
-                            <h4 class="fw-bold m-0 text-dark">Daftar Referensi Tanaman</h4>
-                        </div>
-                        <button class="btn btn-success shadow-sm px-4" data-bs-toggle="modal" data-bs-target="#modalTambah">Tambah tanaman</button>
-                    </div>
-                </div>
-                <!-- Search Bar -->
-                <div class="row mb-3">
-                    <div class="col-md-4 ms-auto">
-                        <form action="" method="GET">
-                            <div class="input-group shadow-sm border" style="border-radius: 8px; background-color: white;">
-                                <span class="input-group-text bg-white border-0 pe-1">
-                                    <i class="bi bi-search text-muted"></i>
-                                </span>
-                                
-                                <input type="text" 
-                                    class="form-control border-0 ps-2" 
-                                    name="search" 
-                                    placeholder="Cari nama atau sinonim..."
-                                    value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
-                                    style="box-shadow: none; background: transparent; height: 45px;"> 
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                <?php 
+                    ViewHelper::renderHeader("Daftar Referensi Tanaman", "modalTambah", "Tambah Tanaman"); 
+                    ViewHelper::renderSearchBar("Cari nama tanaman atau sinonim..."); 
+                ?>
 
                 <div class="card p-4 border-0">
                     <div class="table-responsive">
@@ -392,31 +355,6 @@
             Swal.fire('Berhasil!', 'Kategori telah diperbarui.', 'success');
             window.history.replaceState({}, document.title, window.location.pathname);
         }
-
-        document.getElementById('sidebarCollapse')?.addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('active');
-        });
-
-        //Untuk Logout
-        const logoutBtn = document.querySelector('a[href="logout.php"]');
-        logoutBtn.addEventListener('click', function(e) {
-        e.preventDefault(); 
-            
-        Swal.fire({
-            title: 'Konfirmasi Log Out',
-            text: "Apakah Anda yakin ingin keluar dari sistem?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6', 
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, Keluar',
-            cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = 'logout.php'; 
-                }
-            });
-        });
     </script>
 </body>
 </html>
