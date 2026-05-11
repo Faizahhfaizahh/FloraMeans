@@ -234,57 +234,56 @@
 </div>
 
 <div class="modal fade" id="modalEditParam" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content border-0">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
             <form action="parameter_controller.php" method="POST">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Atur Parameter: <span id="label_nama_kategori" class="text-success"></span></h5>
+                <div class="modal-header bg-warning text-dark" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square me-2"></i>Edit Standarisasi: <span id="label_nama_kategori"></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
                     <input type="hidden" name="id_kategori" id="edit_id">
-                    
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Suhu Udara (°C)</label>
-                            <div class="input-group">
-                                <input type="number" step="0.1" name="suhu_udara_min" id="edit_smin" class="form-control" placeholder="Min">
-                                <span class="input-group-text">-</span>
-                                <input type="number" step="0.1" name="suhu_udara_max" id="edit_smax" class="form-control" placeholder="Max">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Intensitas Cahaya (Lux)</label>
-                            <div class="input-group">
-                                <input type="number" name="cahaya_min" id="edit_cmin" class="form-control" placeholder="Min">
-                                <span class="input-group-text">-</span>
-                                <input type="number" name="cahaya_max" id="edit_cmax" class="form-control" placeholder="Max">
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Kelembapan Udara (%)</label>
-                            <div class="input-group">
-                                <input type="number" name="lembab_udara_min" id="edit_lumin" class="form-control" placeholder="Min">
-                                <span class="input-group-text">-</span>
-                                <input type="number" name="lembab_udara_max" id="edit_lumax" class="form-control" placeholder="Max">
+                    <?php
+                    $paramsEdit = [
+                        ['id' => 'suhu_udara', 'label' => 'Suhu Udara', 'unit' => '°C', 'min' => 0, 'max' => 50, 'step' => 0.5],
+                        ['id' => 'cahaya', 'label' => 'Intensitas Cahaya', 'unit' => 'Lux', 'min' => 0, 'max' => 70000, 'step' => 500],
+                        ['id' => 'lembab_udara', 'label' => 'Kelembapan Udara', 'unit' => '%', 'min' => 0, 'max' => 100, 'step' => 1],
+                        ['id' => 'lembab_tanah', 'label' => 'Kelembapan Tanah', 'unit' => '%', 'min' => 0, 'max' => 100, 'step' => 1],
+                    ];
+
+                    foreach ($paramsEdit as $pe):
+                    ?>
+                    <div class="mb-4">
+                        <label class="fw-bold mb-2 text-dark"><?= $pe['label']; ?> (<?= $pe['unit']; ?>)</label>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="text-center" style="min-width: 70px;">
+                                <small class="text-muted d-block" style="font-size: 9px;">MIN</small>
+                                <span class="badge bg-secondary w-100" id="txt_edit_<?= $pe['id']; ?>_min">0</span>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Kelembapan Tanah (%)</label>
-                            <div class="input-group">
-                                <input type="number" name="lembab_tanah_min" id="edit_ltmin" class="form-control" placeholder="Min">
-                                <span class="input-group-text">-</span>
-                                <input type="number" name="lembab_tanah_max" id="edit_ltmax" class="form-control" placeholder="Max">
+
+                            <input type="range" name="<?= $pe['id']; ?>_min" id="range_edit_<?= $pe['id']; ?>_min" 
+                                   class="form-range" min="<?= $pe['min']; ?>" max="<?= $pe['max']; ?>" 
+                                   step="<?= $pe['step']; ?>" 
+                                   oninput="validateRangeEdit('<?= $pe['id']; ?>', 'min')">
+                            
+                            <input type="range" name="<?= $pe['id']; ?>_max" id="range_edit_<?= $pe['id']; ?>_max" 
+                                   class="form-range" min="<?= $pe['min']; ?>" max="<?= $pe['max']; ?>" 
+                                   step="<?= $pe['step']; ?>" 
+                                   oninput="validateRangeEdit('<?= $pe['id']; ?>', 'max')">
+
+                            <div class="text-center" style="min-width: 70px;">
+                                <small class="text-muted d-block" style="font-size: 9px;">MAX</small>
+                                <span class="badge bg-success w-100" id="txt_edit_<?= $pe['id']; ?>_max">0</span>
                             </div>
                         </div>
                     </div>
+                    <?php endforeach; ?>
+
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" name="btn_edit_parameter" class="btn btn-primary px-4">Simpan Perubahan</button>
+                <div class="modal-footer border-0 bg-light">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" name="btn_edit_parameter" class="btn btn-warning px-4 fw-bold">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -292,51 +291,83 @@
 </div>
 
 <script>
-    function validateRange(paramId, type) {
-        const minSlider = document.getElementById(`range_${paramId}_min`);
-        const maxSlider = document.getElementById(`range_${paramId}_max`);
-        const minTxt = document.getElementById(`txt_${paramId}_min`);
-        const maxTxt = document.getElementById(`txt_${paramId}_max`);
+function validateRange(paramId, type) {
+    const minSlider = document.getElementById(`range_${paramId}_min`);
+    const maxSlider = document.getElementById(`range_${paramId}_max`);
+    const minTxt = document.getElementById(`txt_${paramId}_min`);
+    const maxTxt = document.getElementById(`txt_${paramId}_max`);
 
-        let minValue = parseFloat(minSlider.value);
-        let maxValue = parseFloat(maxSlider.value);
+    let minValue = parseFloat(minSlider.value);
+    let maxValue = parseFloat(maxSlider.value);
 
-        if (type === 'min') {
-            if (minValue >= maxValue) {
-                minSlider.value = maxValue;
-                minValue = maxValue;
-            }
-        } else {
-            if (maxValue <= minValue) {
-                maxSlider.value = minValue;
-                maxValue = minValue;
-            }
-        }
-
-        minTxt.innerText = minValue;
-        maxTxt.innerText = maxValue;
+    if (type === 'min' && minValue >= maxValue) {
+        minSlider.value = maxValue;
+        minValue = maxValue;
+    } else if (type === 'max' && maxValue <= minValue) {
+        maxSlider.value = minValue;
+        maxValue = minValue;
     }
 
-    document.querySelectorAll('.btn-edit-param').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.getElementById('edit_id').value = this.dataset.id;
-            document.getElementById('label_nama_kategori').innerText = this.dataset.nama;
-            document.getElementById('edit_smin').value = this.dataset.smin;
-            document.getElementById('edit_smax').value = this.dataset.smax;
-            document.getElementById('edit_lumin').value = this.dataset.lumin;
-            document.getElementById('edit_lumax').value = this.dataset.lumax;
-            document.getElementById('edit_ltmin').value = this.dataset.ltmin;
-            document.getElementById('edit_ltmax').value = this.dataset.ltmax;
-            document.getElementById('edit_cmin').value = this.dataset.cmin;
-            document.getElementById('edit_cmax').value = this.dataset.cmax;
-        });
+    //Agar cahaya ada titik nya
+    minTxt.innerText = (paramId === 'cahaya') ? minValue.toLocaleString('id-ID') : minValue;
+    maxTxt.innerText = (paramId === 'cahaya') ? maxValue.toLocaleString('id-ID') : maxValue;
+}
+
+function validateRangeEdit(paramId, type) {
+    const minSlider = document.getElementById(`range_edit_${paramId}_min`);
+    const maxSlider = document.getElementById(`range_edit_${paramId}_max`);
+    const minTxt = document.getElementById(`txt_edit_${paramId}_min`);
+    const maxTxt = document.getElementById(`txt_edit_${paramId}_max`);
+
+    let minValue = parseFloat(minSlider.value);
+    let maxValue = parseFloat(maxSlider.value);
+
+    if (type === 'min' && minValue >= maxValue) {
+        minSlider.value = maxValue;
+        minValue = maxValue;
+    } else if (type === 'max' && maxValue <= minValue) {
+        maxSlider.value = minValue;
+        maxValue = minValue;
+    }
+
+    minTxt.innerText = (paramId === 'cahaya') ? minValue.toLocaleString('id-ID') : minValue;
+    maxTxt.innerText = (paramId === 'cahaya') ? maxValue.toLocaleString('id-ID') : maxValue;
+}
+
+document.querySelectorAll('.btn-edit-param').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.getElementById('edit_id').value = this.dataset.id;
+        document.getElementById('label_nama_kategori').innerText = this.dataset.nama;
+
+        const fillSlider = (param, minVal, maxVal) => {
+            const sMin = document.getElementById(`range_edit_${param}_min`);
+            const sMax = document.getElementById(`range_edit_${param}_max`);
+            if(sMin && sMax) {
+                sMin.value = minVal;
+                sMax.value = maxVal;
+
+                validateRangeEdit(param, 'min');
+                validateRangeEdit(param, 'max');
+            }
+        };
+
+        fillSlider('suhu_udara', this.dataset.smin, this.dataset.smax);
+        fillSlider('cahaya', this.dataset.cmin, this.dataset.cmax);
+        fillSlider('lembab_udara', this.dataset.lumin, this.dataset.lumax);
+        fillSlider('lembab_tanah', this.dataset.ltmin, this.dataset.ltmax);
     });
+});
 
-    const urlParams = new URLSearchParams(window.location.search);
-    if(urlParams.get('pesan') === 'sukses_edit') {
-        Swal.fire('Berhasil!', 'Parameter lingkungan telah diperbarui.', 'success');
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
+const urlParams = new URLSearchParams(window.location.search);
+if(urlParams.get('pesan') === 'sukses_edit') {
+    Swal.fire({
+        title: 'Berhasil!',
+        text: 'Parameter lingkungan telah diperbarui.',
+        icon: 'success',
+        confirmButtonColor: '#198754'
+    });
+    window.history.replaceState({}, document.title, window.location.pathname);
+}
 </script>
 </body>
 </html>

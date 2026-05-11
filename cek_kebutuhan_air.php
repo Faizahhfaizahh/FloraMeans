@@ -1,3 +1,8 @@
+<?php
+    require_once 'auth.php';
+    Auth::cekLoginUser();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

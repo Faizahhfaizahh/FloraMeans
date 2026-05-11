@@ -56,6 +56,13 @@ class Auth extends Database{
         }
     }
 
+    public static function cekLoginUser() {
+        if (!isset($_SESSION['id_user']) || $_SESSION['role'] !== 'user') {
+            header("Location: login.php");
+            exit();
+        }
+    }
+
     public function loginUser($username, $password) {
         $username = $this->escape($username); //Membersihkan input dari karakter aneh agar db tidak rusak
         

@@ -49,7 +49,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
 </nav>
 
 <script>
-    // Gunakan pengecekan event listener agar tidak bentrok
     document.addEventListener('DOMContentLoaded', function() {
         const btnLogout = document.getElementById('btnLogoutSide');
         if (btnLogout) {
