@@ -81,7 +81,7 @@
                                     </td>
                                     <td class="fw-medium text-dark"><?= $row['nama_kategori'];?></td>
                                     <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-warning me-1 btn-edit" 
+                                        <button class="btn btn-sm btn-light text-warning me-1 btn-edit" 
                                             data-id="<?= $row['id_tanaman'];?>" 
                                             data-nama="<?= $row['nama_tanaman'];?>"
                                             data-sinonim="<?= $row['sinonim'];?>"
@@ -90,7 +90,7 @@
                                             data-bs-target="#modalEdit">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-outline-danger btn-delete" data-id="<?= $row['id_tanaman'];?>"><i class="bi bi-trash"></i></button>
+                                        <button class="btn btn-sm btn-light text-danger btn-delete" data-id="<?= $row['id_tanaman'];?>"><i class="bi bi-trash3-fill"></i></button>
                                     </td>
                                 </tr>
                                 <?php

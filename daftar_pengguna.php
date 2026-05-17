@@ -139,8 +139,7 @@
                                             <td class="fw-semibold text-dark" ><?= htmlspecialchars($row['tanggal_registrasi']); ?></td>
                                             <td class="pe-4 text-end">
                                                 <button class="btn btn-light btn-sm text-danger border-0" 
-                                                        onclick="konfirmasiHapus(<?= $row['id_user']; ?>)" 
-                                                        data-bs-toggle="tooltip">
+                                                        onclick="konfirmasiHapus(<?= $row['id_user']; ?>)">
                                                     <i class="bi bi-trash3-fill"></i>
                                                 </button>
                                             </td>

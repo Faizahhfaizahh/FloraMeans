@@ -74,7 +74,7 @@
                                     <?= $row['cahaya_min']; ?> - <?= $row['cahaya_max']; ?>
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-outline-warning btn-edit-param" 
+                                    <button class="btn btn-sm btn-light text-warning btn-edit-param" 
                                         data-id="<?= $row['id_kategori']; ?>"
                                         data-nama="<?= $row['nama_kategori']; ?>"
                                         data-smin="<?= $row['suhu_udara_min']; ?>" data-smax="<?= $row['suhu_udara_max']; ?>"
