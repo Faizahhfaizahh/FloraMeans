@@ -135,7 +135,7 @@
                                 <?php
                                 $no =1;
                                 if (mysqli_num_rows($dataTanaman) > 0 ){
-                                    while ($row = mysqli_fetch_assoc($dataTanaman)):
+                                    while ($row = mysqli_fetch_assoc($dataTanaman)){
                                 ?>
                                 <tr>
                                     <td class="px-3"><?= $no++;?></td>
@@ -157,9 +157,12 @@
                                         <button class="btn btn-sm btn-outline-danger btn-delete" data-id="<?= $row['id_tanaman'];?>"><i class="bi bi-trash"></i></button>
                                     </td>
                                 </tr>
-                                <?php 
-                                    endwhile;
+                                <?php
+                                    } 
+                                    // Menyimpan jumlah total data untuk info di bawah tabel
+                                    $totalData = $no - 1; 
                                 } else {
+                                    $totalData = 0;
                                     echo '<tr><td colspan="5" class="text-center py-5 text-muted italic">Belum ada data tanaman yang terdaftar.</td></tr>';
                                 }
                                 ?>
@@ -167,6 +170,7 @@
                             </table>
                         </div>
                     </div>
+                    <?php ViewHelper::renderTableFooter($totalData, "tanaman"); ?>
                 </div>
             </div>
         </main>

@@ -1,21 +1,27 @@
 <?php
 class ViewHelper {
-    // Fungsi untuk mencetak Header Halaman & Tombol Tambah
-    public static function renderHeader($title, $modalTarget, $buttonText = "Tambah Data") {
+    // Fungsi untuk mencetak Header Halaman & Tombol Tambah 
+    public static function renderHeader($title, $modalTarget = "", $buttonText = "Tambah Data") {
         echo '
         <div class="container-box">
             <div class="d-flex justify-content-between align-items-end mb-4">
                 <div>
                     <h4 class="fw-bold m-0 text-dark">' . $title . '</h4>
-                </div>
+                </div>';
+        // Jika modal target ada maka tombol muncul       
+        if (!empty($modalTarget)) {
+            echo '
                 <button class="btn btn-success shadow-sm px-4" data-bs-toggle="modal" data-bs-target="#' . $modalTarget . '">
                     ' . $buttonText .'
-                </button>
+                </button>';
+        }
+
+        echo '
             </div>
         </div>';
     }
 
-    // Fungsi untuk membuat Search Bar dinamis
+    // Fungsi untuk membuat Search Bar 
     public static function renderSearchBar($placeholder) {
         $searchValue = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
         echo '
@@ -34,4 +40,21 @@ class ViewHelper {
             </div>
         </div>';
     }
+
+    // Function untuk mencetak informasi total data dan tombol navigasi halaman 
+    public static function renderTableFooter($totalData, $unitName = "data") {
+        echo '
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <p class="text-muted small mb-0">Menampilkan ' . $totalData . ' ' . $unitName . '</p>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item disabled"><a class="page-link" href="#" style="border-radius: 6px 0 0 6px;">Sebelumnya</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item disabled"><a class="page-link" href="#" style="border-radius: 0 6px 6px 0;">Selanjutnya</a></li>
+                    </ul>
+                </nav>
+            </div>';
+    }
+
 }
+?>

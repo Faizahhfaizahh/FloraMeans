@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 08 Bulan Mei 2026 pada 03.45
+-- Waktu pembuatan: 17 Bulan Mei 2026 pada 05.22
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -49,21 +49,25 @@ INSERT INTO `admin` (`id_admin`, `username`, `password`) VALUES
 CREATE TABLE `kategori` (
   `id_kategori` int(11) NOT NULL,
   `nama_kategori` varchar(25) NOT NULL,
-  `suhu_pusat` double NOT NULL,
-  `cahaya_pusat` double NOT NULL,
-  `lembab_udara_pusat` double NOT NULL,
-  `lembab_tanah_pusat` double NOT NULL
+  `suhu_udara_min` double NOT NULL,
+  `suhu_udara_max` double NOT NULL,
+  `cahaya_min` double NOT NULL,
+  `cahaya_max` double NOT NULL,
+  `lembab_udara_min` double NOT NULL,
+  `lembab_udara_max` double NOT NULL,
+  `lembab_tanah_min` double NOT NULL,
+  `lembab_tanah_max` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `kategori`
 --
 
-INSERT INTO `kategori` (`id_kategori`, `nama_kategori`, `suhu_pusat`, `cahaya_pusat`, `lembab_udara_pusat`, `lembab_tanah_pusat`) VALUES
-(3, 'Mesofit', 0, 0, 0, 0),
-(4, 'Xerofit', 0, 0, 0, 0),
-(5, 'Hidrofit', 0, 0, 0, 0),
-(6, 'Higrofit', 0, 0, 0, 0);
+INSERT INTO `kategori` (`id_kategori`, `nama_kategori`, `suhu_udara_min`, `suhu_udara_max`, `cahaya_min`, `cahaya_max`, `lembab_udara_min`, `lembab_udara_max`, `lembab_tanah_min`, `lembab_tanah_max`) VALUES
+(3, 'Mesofit', 20, 30, 20000, 40000, 50, 70, 40, 73),
+(4, 'Xerofit', 0, 0, 0, 0, 0, 0, 0, 0),
+(5, 'Hidrofit', 0, 0, 0, 0, 0, 0, 0, 0),
+(6, 'Higrofit', 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -97,6 +101,15 @@ CREATE TABLE `tanaman` (
   `id_kategori` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data untuk tabel `tanaman`
+--
+
+INSERT INTO `tanaman` (`id_tanaman`, `nama_tanaman`, `sinonim`, `id_kategori`) VALUES
+(1, 'Rambutan', '', 3),
+(2, 'Lidah Buaya', 'Aloe Vera, Lidah Naga', 4),
+(3, 'Pisang', '', 3);
+
 -- --------------------------------------------------------
 
 --
@@ -105,6 +118,7 @@ CREATE TABLE `tanaman` (
 
 CREATE TABLE `user` (
   `id_user` int(11) NOT NULL,
+  `tanggal_registrasi` datetime DEFAULT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -113,10 +127,8 @@ CREATE TABLE `user` (
 -- Dumping data untuk tabel `user`
 --
 
-INSERT INTO `user` (`id_user`, `username`, `password`) VALUES
-(1, 'faizah ', '4c51299eb62065be9961ebe031f53053'),
-(2, 'flora', 'b189fbf353f7abc4d3c5cd4f9163960f'),
-(3, 'taro', 'afd49503a8d7c8c746e4018dad6e4f64');
+INSERT INTO `user` (`id_user`, `tanggal_registrasi`, `username`, `password`) VALUES
+(1, NULL, 'faizah ', '4c51299eb62065be9961ebe031f53053');
 
 --
 -- Indexes for dumped tables
@@ -178,7 +190,7 @@ ALTER TABLE `simulasi`
 -- AUTO_INCREMENT untuk tabel `tanaman`
 --
 ALTER TABLE `tanaman`
-  MODIFY `id_tanaman` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_tanaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
