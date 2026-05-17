@@ -34,69 +34,6 @@
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 
-    <style>
-    /* Sidebar Styling */
-    #sidebar {
-        min-width: 250px;
-        max-width: 250px;
-        background-color: #064e3b; 
-        color: white;
-        transition: all 0.3s;
-        min-height: 100vh;
-        position: fixed;
-        z-index: 1000;
-    }
-
-    #sidebar .sidebar-header {
-        padding: 20px;
-        background: #043d2e;
-    }
-
-    #sidebar ul.components {
-        padding: 20px 0;
-    }
-
-    #sidebar ul li a {
-        padding: 14px 20px;
-        font-size: 0.95rem;
-        display: block;
-        color: rgba(255, 255, 255, 0.7);
-        text-decoration: none;
-        transition: 0.3s;
-    }
-
-    #sidebar ul li a:hover, #sidebar ul li a.active {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.1);
-        border-left: 4px solid #2ecc71;
-    }
-
-    #sidebar ul li a i {
-        margin-right: 10px;
-    }
-
-    #main-content {
-        width: 100%;
-        padding-left: 300px; 
-        transition: all 0.3s;
-    }
-
-    .container-box { 
-        max-width: 1000px; 
-        margin: 0 auto; 
-    }
-
-    .card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-
-
-    /* Responsive Mobile */
-    @media (max-width: 768px) {
-            #sidebar { margin-left: -260px; }
-            #sidebar.active { margin-left: 0; }
-            #main-content { padding-left: 0; }
-    }
-    </style>
-
 </head>
 <body>
     <div class="d-flex">
@@ -125,18 +62,24 @@
                                         $no = 1;
                                         if (mysqli_num_rows($dataPengguna) > 0) {
                                             while($row = mysqli_fetch_assoc($dataPengguna)) { 
-                                                //Ubah format tgl bawaan database (YYYY-MM-DD) jadi (15 Mei 2026)
+                                            // Cek jika data dari database kosong atau bernilai 0000-00-00
+                                            if (empty($row['tanggal_registrasi']) || $row['tanggal_registrasi'] == '0000-00-00') {
+                                                $tglRegistrasi = '<em class="text-muted small">Belum Tercatat</em>';
+                                            } else {
+                                                // Proses konversi tanggal jika datanya valid
                                                 $tanggal = strtotime($row['tanggal_registrasi']);
                                                 $bulanIndo = [
                                                     1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
                                                     'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
                                                 ];
                                                 $tglRegistrasi = date('d', $tanggal) . ' ' . $bulanIndo[(int)date('m', $tanggal)] . ' ' . date('Y', $tanggal);
+                                                $tglRegistrasi = htmlspecialchars($tglRegistrasi);
+                                            }
                                         ?>
                                         <tr>
                                             <td class="ps-4 fw-medium text-dark"><?= $no++; ?></td>
                                             <td><span class="fw-semibold text-dark "><?= htmlspecialchars($row['username']); ?></span></td>
-                                            <td class="fw-semibold text-dark" ><?= htmlspecialchars($row['tanggal_registrasi']); ?></td>
+                                            <td class="fw-semibold text-dark" ><?= $tglRegistrasi; ?></td>
                                             <td class="pe-4 text-end">
                                                 <button class="btn btn-light btn-sm text-danger border-0" 
                                                         onclick="konfirmasiHapus(<?= $row['id_user']; ?>)">
