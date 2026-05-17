@@ -3,8 +3,30 @@ class ViewHelper {
     // Fungsi untuk mencetak Header Halaman & Tombol Tambah 
     public static function renderHeader($title, $modalTarget = "", $buttonText = "Tambah Data") {
         echo '
+        <style>
+            /* Untuk mobile nya*/
+            @media (max-width: 768px) {
+                .responsive-header-wrapper { /* Mengubah susunan header dari kiri-kanan menjadi atas-bawah */
+                    flex-direction: column !important;
+                    align-items: flex-start !important;
+                    gap: 12px !important;
+                }
+                
+                .responsive-header-wrapper button {
+                    width: 100% !important;
+                }
+
+                .responsive-footer-wrapper { /* Mengubah susunan footer tabel menjadi bertumpuk di tengah */
+                    flex-direction: column !important;
+                    gap: 15px !important;
+                    text-align: center !important;
+                }
+            }
+        </style>';
+
+        echo '
         <div class="container-box">
-            <div class="d-flex justify-content-between align-items-end mb-4">
+            <div class="d-flex justify-content-between align-items-end mb-4 responsive-header-wrapper">
                 <div>
                     <h4 class="fw-bold m-0 text-dark">' . $title . '</h4>
                 </div>';
@@ -21,7 +43,7 @@ class ViewHelper {
         </div>';
     }
 
-    // Fungsi untuk membuat Search Bar 
+    // Fungsi untuk membuat Search Bar (Tetap aman seperti kode asli Anda)
     public static function renderSearchBar($placeholder) {
         $searchValue = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
         echo '
@@ -44,7 +66,7 @@ class ViewHelper {
     // Function untuk mencetak informasi total data dan tombol navigasi halaman 
     public static function renderTableFooter($totalData, $unitName = "data") {
         echo '
-            <div class="d-flex justify-content-between align-items-center mt-3">
+            <div class="d-flex justify-content-between align-items-center mt-3 responsive-footer-wrapper">
                 <p class="text-muted small mb-0">Menampilkan ' . $totalData . ' ' . $unitName . '</p>
                 <nav aria-label="Page navigation">
                     <ul class="pagination pagination-sm mb-0">
@@ -55,6 +77,6 @@ class ViewHelper {
                 </nav>
             </div>';
     }
-
+    
 }
 ?>
