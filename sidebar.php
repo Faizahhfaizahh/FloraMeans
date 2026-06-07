@@ -205,7 +205,7 @@ $nama_admin = isset($_SESSION['admin_username']) ? $_SESSION['admin_username'] :
             </a>
         </li>
         <li>
-            <a href="riwayat_clustering.php" class="<?= ($current_page == 'riwayat_clustering.php') ? 'active' : ''; ?>">
+            <a href="riwayat_clustering_admin.php" class="<?= ($current_page == 'riwayat_clustering_admin.php') ? 'active' : ''; ?>">
                 <i class="bi bi-clock-history"></i> Riwayat Clustering
             </a>
         </li>
