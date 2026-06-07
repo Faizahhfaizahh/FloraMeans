@@ -3,7 +3,7 @@
     require_once 'viewHelper.php';   
     require_once 'profil_controller.php';   
 
-    Auth::cekLoginUser(); 
+    Auth::cekLoginAdmin(); 
 
     // Membuat objek 
     $profilObj = new Profil();
@@ -15,7 +15,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Profile</title>
+    <title>Admin Profile</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -29,75 +29,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
-    <style>
-        .navbar-flora {
-            background-color: #064e3b; 
-            backdrop-filter: blur(10px); 
-        }
-
-        .navbar-flora .navbar-brand {
-            color: #f5f5f5 !important;
-            letter-spacing: 1px;
-        }
-
-        .navbar-flora .nav-link {
-            color: rgba(255, 255, 255, 0.8) !important;
-            font-weight: 500;
-            transition: 0.3s;
-            padding: 10px 15px !important;
-        }
-
-        .navbar-flora .nav-link:hover {
-            color: #2ecc71 !important;
-        }
-
-        .navbar-flora .nav-link.active {
-            color: #2ecc71 !important;
-            font-weight: 600;
-        }
-
-        .btn-profile {
-            background-color: #1a5c3d; 
-            border: none;
-        }
-
-        .btn-profile:hover {
-            background-color: #27ae60;
-            color: white;
-        }
-        ::placeholder {
-            font-size: 0.85rem; 
-            opacity: 0.5 !important; 
-            font-weight: 400;
-        }
-    </style>
 
 </head>
 <body>
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-flora navbar-dark sticky-top shadow-sm">
-        <div class="container-fluid"> <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
-                <img src="images/logo/FloraMeans_Logo4.png" alt="Logo" width="30" height="30" class="">
-                FloraMeans
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+<div class="d-flex">
+    <?php include 'sidebar.php'; ?>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto gap-lg-2">
-                    <li class="nav-item"><a class="nav-link" href="dashbaord_user.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="cek_kebutuhan_air.php">Cek Kebutuhan Air</a></li>
-                    <li class="nav-item"><a class="nav-link" href="riwayat_clustering.php">Riwayat Clustering</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="profil_user.php">Profil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- profil.php -->
     <main id="main-content">
         <div class="container py-5">
             <div class="row justify-content-center">
@@ -106,16 +43,14 @@
                         <div class="card-body p-4 p-md-5">
                             <!-- Avatar Section -->
                             <div class="text-center mb-4">
-                                <div class="bg-user-theme rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                                    <i class="bi bi-person-fill text-success fs-1"></i>
-                                </div>
-                                <h5 class="fw-bold m-0">Profil Anda</h5>
-                                <p class="text-muted small mt-2">Kelola informasi akun Anda di FloraMeans</p>
+                                <img src="images/avatar.jpg" alt="Admin" width="80" height="80" class="rounded-circle me-md-2 border">
+                                <h5 class="fw-bold m-2">Profil Admin</h5>
+                                <p class="text-muted small mt-2">Kelola informasi akun admin Anda</p>
                             </div>
 
                             <form action="profil_controller.php" method="POST" id="formUpdateProfile">
                                 <input type="hidden" name="action" value="updateProfile">
-                                <input type="hidden" name="role_form" value="user">
+                                <input type="hidden" name="role_form" value="admin">
                                 <div class="mb-3">
                                     <label class="form-label small fw-bold">Username</label>
                                     <div class="input-group">
@@ -146,7 +81,7 @@
         </div>  
         </div>
     </main>
-
+</div>
 
 <script>
     const togglePassword = document.querySelector('#togglePassword');
@@ -208,34 +143,12 @@
                             location.reload(); 
                         });
                     } else {
-                        // Swal.fire('Gagal', 'Terjadi kesalahan pada sistem.', 'error');
-                        Swal.fire('Gagal', data.message || 'Tidak ada pesan error', 'error');
+                        Swal.fire('Gagal', 'Terjadi kesalahan pada sistem.', 'error');
                     }
                 })
                 .catch(error => {
                     Swal.fire('Gagal', 'Terjadi masalah pada koneksi server.', 'error');
                 });
-            }
-        });
-    });
-
-    //Untuk Logout
-    const logoutBtn = document.querySelector('a[href="logout.php"]');
-    logoutBtn.addEventListener('click', function(e) {
-    e.preventDefault(); 
-        
-    Swal.fire({
-        title: 'Konfirmasi Log Out',
-        text: "Apakah Anda yakin ingin keluar dari sistem?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6', 
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Keluar',
-        cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = 'logout.php'; 
             }
         });
     });

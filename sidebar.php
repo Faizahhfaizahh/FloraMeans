@@ -147,7 +147,7 @@ $nama_admin = isset($_SESSION['admin_username']) ? $_SESSION['admin_username'] :
 <nav class="navbar navbar-expand-lg navbar-light bg-white px-4 shadow-sm fixed-top main-navbar">
     <div class="container-fluid p-0">
         <div class="d-flex align-items-center">
-            <button class="btn btn-light border-0 shadow-sm me-3" id="menu-toggle">
+            <button class="btn btn-light border shadow-sm me-3" id="menu-toggle">
                 <i class="bi bi-list fs-5"></i>
             </button>
             
