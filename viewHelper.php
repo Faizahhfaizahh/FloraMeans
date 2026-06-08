@@ -43,7 +43,7 @@ class ViewHelper {
         </div>';
     }
 
-    // Fungsi untuk membuat Search Bar (Tetap aman seperti kode asli Anda)
+    // Fungsi untuk membuat Search Bar
     public static function renderSearchBar($placeholder) {
         $searchValue = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
         echo '
@@ -70,9 +70,9 @@ class ViewHelper {
                 <p class="text-muted small mb-0">Menampilkan ' . $totalData . ' ' . $unitName . '</p>
                 <nav aria-label="Page navigation">
                     <ul class="pagination pagination-sm mb-0">
-                        <li class="page-item disabled"><a class="page-link" href="#" style="border-radius: 6px 0 0 6px;">Sebelumnya</a></li>
+                        <li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a></li>
                         <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item disabled"><a class="page-link" href="#" style="border-radius: 0 6px 6px 0;">Selanjutnya</a></li>
+                        <li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a></li>
                     </ul>
                 </nav>
             </div>';

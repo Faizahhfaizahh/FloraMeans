@@ -1,9 +1,9 @@
 <?php
-    require_once 'auth.php'; 
-    require_once 'viewHelper.php'; 
-    Auth::cekLoginAdmin(); 
+    require_once 'auth.php';
+    require_once 'viewHelper.php';
+    Auth::cekLoginUser();
 
-    // Simulasi data (data dummy / data coba-coba)
+        // Simulasi data (data dummy / data coba-coba)
     $simulasi_riwayat = [
         [
             'id_riwayat' => 1,
@@ -28,14 +28,13 @@
         ]
     ];
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riwayat Clustering Pengguna - FloraMeans</title>
+    <title>Riwayat Clustering - FloraMeans</title>
+
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
@@ -48,17 +47,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
+
 </head>
-<body>
-    <div class="d-flex">
-    <?php include 'sidebar.php'; ?> 
+<body class="bg-user-theme">
+    <?php include 'navbar.php'; ?>
 
     <main id="main-content">
         <div class="container-fluid p-4 p-md-5">
-            <?php  
-                ViewHelper::renderHeader("Riwayat Clustering Pengguna", ""); 
-                ViewHelper::renderSearchBar("Cari nama tanaman atau pengguna..."); 
-            ?>
+            
+<div class="container-box">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4 class="fw-bold m-0 text-dark">Riwayat Clustering</h4>
+            <p class="text-muted small mt-1 mb-0">Lihat hasil analisis kebutuhan air tanamanmu</p>
+        </div>
+    </div>
+</div>
+
+<?php ViewHelper::renderSearchBar("Cari nama tanaman..."); ?>
 
             <div class="card p-4 shadow-sm border-0 mt-3">
                 <div class="card-body p-0"> 
@@ -67,12 +73,11 @@
                             <thead class="table-light text-secondary">
                                 <tr>
                                     <th class="ps-4 py-3" style="width: 70px;">No</th>
-                                    <th class="py-3">Pengguna</th>
                                     <th class="py-3">Nama Tanaman</th>
                                     <th class="py-3 text-center">Hasil Cluster</th>
-                                    <th class="py-3">Status Tanaman</th>
+                                    <th class="py-3">Status Lingkungan</th>
                                     <th class="py-3">Waktu</th>
-                                    <th class="py-3 text-center" style="width: 130px;">Aksi</th>
+                                    <th class="py-3 " style="width: 130px;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,8 +87,7 @@
                                 ?>
                                 <tr>
                                     <td class="ps-4 fw-medium text-dark"><?= $no++; ?></td>
-                                    <td><span class="text-secondary"><?= htmlspecialchars($row['username']); ?></span></td>
-                                    <td><strong class="fw-semibold text-dark"><?= htmlspecialchars($row['nama_tanaman']); ?></strong></td>
+                                    <td class="fw-semibold text-dark"><?= htmlspecialchars($row['nama_tanaman']); ?></td>
                                     <td class="text-center">
                                         <?php
                                         $clusterColor = [
@@ -99,28 +103,25 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <?php if($row['status_tanaman'] == 'ada'): ?>
-                                            <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill"><i class="bi bi-check-circle-fill me-1"></i> Terdaftar</span>
+                                        <?php if($row['kesesuaian'] == 'Sesuai'): ?>
+                                            <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">
+                                                <i class="bi bi-check-circle-fill me-1"></i> Sesuai
+                                            </span>
                                         <?php else: ?>
-                                            <span class="badge bg-warning-subtle text-warning-emphasis px-2 py-1 rounded-pill"><i class="bi bi-exclamation-triangle-fill me-1"></i> Belum Terdaftar</span>
+                                            <span class="badge bg-danger-subtle text-danger-emphasis px-3 py-2 rounded-pill">
+                                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Tidak Sesuai
+                                            </span>
                                         <?php endif; ?>
                                     </td>
                                     <td class="text-muted small"><?= $row['waktu']; ?></td>
                                     
-                                    <td class="pe-4 text-end">
-                                        <div class="d-flex justify-content-end gap-1">
-                                            <button class="btn btn-light text-primary border-0 text-decoration-none" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#modalDetailRiwayat<?= $row['id_riwayat']; ?>" 
-                                                    title="Lihat Detail Parameter">
-                                                <i class="bi bi-eye-fill"></i>
-                                            </button>
-                                            <button class="btn btn-light text-danger border-0 text-decoration-none" 
-                                                    onclick="konfirmasiHapus(<?= $row['id_riwayat']; ?>)" 
-                                                    title="Hapus Catatan">
-                                                <i class="bi bi-trash3-fill"></i>
-                                            </button>
-                                        </div>
+                                    <td>
+                                        <button class="btn btn-light text-primary border-0 text-decoration-none" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#modalDetailRiwayat<?= $row['id_riwayat']; ?>" 
+                                                title="Lihat Detail Parameter">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </button>
                                     </td>
                                 </tr>
 
@@ -133,13 +134,18 @@
                                                 <button type="button" class="btn-close" data-bs-toggle="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body px-4 pb-4">
-                                                <p class="text-muted small mb-3">Berikut adalah rincian data sensor lingkungan saat pengujian tanaman <strong><?= $row['nama_tanaman']; ?></strong> oleh <strong><?= $row['username']; ?></strong>.</p>
+                                                <p class="text-muted small mb-3">Berikut adalah rincian data sensor lingkungan saat pengujian tanaman <strong><?= $row['nama_tanaman']; ?></strong>.</p>
                                                 
+                                                <div class="d-flex align-items-center gap-2 mb-3">
+                                                    <span class="text-muted small">Hasil Cluster:</span>
+                                                    <span class="fw-bold"><?= $row['hasil_cluster']; ?></span>
+                                                </div>
+
                                                 <div class="alert <?= $row['kesesuaian'] == 'Sesuai' ? 'alert-success border-success-subtle' : 'alert-danger border-danger-subtle' ?> d-flex align-items-center mb-4" role="alert">
                                                     <i class="bi <?= $row['kesesuaian'] == 'Sesuai' ? 'bi-shield-check-fill' : 'bi-shield-exclamation-fill' ?> fs-4 me-3"></i>
                                                     <div>
                                                         <span class="fw-bold d-block">Status Kondisi Lingkungan:</span>
-                                                        Kondisi lingkungan saat ini <strong class="text-uppercase"><?= $row['kesesuaian']; ?></strong> sesuai dengan tanaman ini.
+                                                        Kondisi lingkungan saat ini <strong class="text-uppercase"><?= $row['kesesuaian']; ?></strong> untuk tanaman ini.
                                                     </div>
                                                 </div>
 
@@ -183,10 +189,9 @@
                     </div>
                 </div>
             </div>
-            <?php ViewHelper::renderTableFooter($totalData, "riwayat"); ?>
-        </div>
-    </main>
-</div>
+        <?php ViewHelper::renderTableFooter($totalData, "riwayat"); ?>
+    </div>
+</main>
+    
 </body>
 </html>
-
