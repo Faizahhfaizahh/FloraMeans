@@ -52,10 +52,10 @@
                                 <input type="hidden" name="action" value="updateProfile">
                                 <input type="hidden" name="role_form" value="admin">
                                 <div class="mb-3">
-                                    <label class="form-label small fw-bold">Username</label>
+                                    <label for="username" class="form-label small fw-bold">Username</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light border-0"><i class="bi bi-person"></i></span>
-                                        <input type="text" class="form-control bg-light border-0" name="username" value="<?= htmlspecialchars($current_username); ?>" required>
+                                        <input type="text" class="form-control bg-light border-0" id="username"name="username" value="<?= htmlspecialchars($current_username); ?>" autocomplete="username" required>
                                     </div>
                                 </div>
 

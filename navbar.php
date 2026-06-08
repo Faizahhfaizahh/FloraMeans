@@ -55,6 +55,9 @@ $nama_user = isset($_SESSION['user_username']) ? $_SESSION['user_username'] : 'U
                     <a href="riwayat_clustering_user.php" class="nav-link <?= ($current_page == 'riwayat_clustering_user.php') ? 'active' : ''; ?>">Riwayat Clustering</a>
                 </li>
                 <li class="nav-item">
+                    <a href="panduan.php" class="nav-link <?= ($current_page == 'panduan.php') ? 'active' : ''; ?>">Panduan</a>
+                </li>
+                <li class="nav-item">
                     <a href="profil_user.php" class="nav-link <?= ($current_page == 'profil_user.php') ? 'active' : ''; ?>">Profil</a>
                 </li>
                 <li class="nav-item">

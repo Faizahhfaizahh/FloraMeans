@@ -70,6 +70,12 @@ $nama_admin = isset($_SESSION['admin_username']) ? $_SESSION['admin_username'] :
         margin-right: 10px;
     }
 
+    .item-profil:hover, .item-profil:focus {
+        background-color: #f0fdf4;
+        color: #065f46;
+        border-radius: 6px;
+    }
+
     #main-content {
         width: 100%;
         padding-left: 250px;
@@ -164,7 +170,7 @@ $nama_admin = isset($_SESSION['admin_username']) ? $_SESSION['admin_username'] :
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" aria-labelledby="dropdownProfile" style="border-radius: 10px;">
                     <li><h6 class="dropdown-header text-muted">Manajemen Akun</h6></li>
-                    <li><a class="dropdown-item py-2" href="profil_admin.php"><i class="bi bi-person me-2 text-secondary"></i> Profil Saya</a></li>
+                    <li><a class="dropdown-item py-2 item-profil" href="profil_admin.php"><i class="bi bi-person me-2 text-secondary"></i> Profil Saya</a></li>
                     <li><a class="dropdown-item py-2 text-danger" href="#" id="btnLogoutNavbar"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
                 </ul>
             </div>
