@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Check</title>
+    <title>Cek Kebutuhan Air - FloraMeans </title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -30,7 +30,7 @@
             background-color: #f8f9fa !important; 
         }
         .btn-success:hover { 
-            background-color: #14462e !important; 
+            background-color: #2ecc71 !important; 
             transform: translateY(-1px); 
         }
         .transition-all { 
@@ -55,7 +55,7 @@
                     <div class="card-body p-4 p-md-5">
                         <div class="text-center mb-4">
                             <h4 class="fw-bold text-dark">Cek Kebutuhan Air</h4>
-                            <p class="text-muted small">Input variabel lingkungan untuk identifikasi kategori tanaman.</p>
+                            <p class="text-muted small">Masukkan data sensor tanamanmu untuk mengetahui kategori dan kebutuhan airnya.</p>
                         </div>
 
                             <form id="formClustering" action="proses_kmeans.php" method="POST">

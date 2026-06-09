@@ -15,7 +15,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Profile</title>
+    <title>Riwayat Clustering - FloraMeans Admin</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -45,7 +45,7 @@
                             <div class="text-center mb-4">
                                 <img src="images/avatar.jpg" alt="Admin" width="80" height="80" class="rounded-circle me-md-2 border">
                                 <h5 class="fw-bold m-2">Profil Admin</h5>
-                                <p class="text-muted small mt-2">Kelola informasi akun admin Anda</p>
+                                <p class="text-muted small mt-2">Perbarui username dan password akun admin</p>
                             </div>
 
                             <form action="profil_controller.php" method="POST" id="formUpdateProfile">
@@ -71,7 +71,7 @@
                                 </div>
 
                                 <button type="submit" class="btn btn-profile btn-success w-100 fw-bold py-2 rounded-3 shadow-sm transition-all">
-                                    Update Profil
+                                    Simpan Perubahan
                                 </button>
                             </form>
                         </div>

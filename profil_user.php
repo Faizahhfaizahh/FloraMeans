@@ -15,7 +15,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Profile</title>
+    <title>Profil Saya - FloraMeans</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -63,8 +63,8 @@
                                 <div class="bg-user-theme rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
                                     <i class="bi bi-person-fill text-success fs-1"></i>
                                 </div>
-                                <h5 class="fw-bold m-0">Profil Anda</h5>
-                                <p class="text-muted small mt-2">Kelola informasi akun Anda di FloraMeans</p>
+                                <h5 class="fw-bold m-0">Profil Saya</h5>
+                                <p class="text-muted small mt-2">Perbarui username dan password akunmu</p>
                             </div>
 
                             <form action="profil_controller.php" method="POST" id="formUpdateProfile">
@@ -90,7 +90,7 @@
                                 </div>
 
                                 <button type="submit" class="btn btn-profile btn-success w-100 fw-bold py-2 rounded-3 shadow-sm transition-all">
-                                    Update Profil
+                                    Simpan Perubahan
                                 </button>
                             </form>
                         </div>

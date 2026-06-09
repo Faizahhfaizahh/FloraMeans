@@ -94,7 +94,6 @@ $nama_admin = isset($_SESSION['admin_username']) ? $_SESSION['admin_username'] :
         border-radius: 12px; 
         box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
     }
-
     
     /* Ketika Sidebar disembunyikan Class .sidebar-hidden aktif*/
     body.sidebar-hidden #sidebar {
@@ -162,14 +161,14 @@ $nama_admin = isset($_SESSION['admin_username']) ? $_SESSION['admin_username'] :
 
         <div class="ms-auto d-flex align-items-center">
             <div class="dropdown">
-                <a class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark" href="#" role="button" id="dropdownProfile" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="d-flex align-items-center text-decoration-none text-dark" href="#" role="button" id="dropdownProfile" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="images/avatar.jpg" alt="Admin" width="32" height="32" class="rounded-circle me-md-2 border">
                     <div class="d-none d-md-block text-start me-1">
                         <p class="m-0 small fw-bold lh-1"><?= htmlspecialchars($nama_admin); ?></p>
                     </div>
+                    <i class="bi bi-chevron-down d-none d-md-block" style="font-size: 0.7rem; color: #6b7280;"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" aria-labelledby="dropdownProfile" style="border-radius: 10px;">
-                    <li><h6 class="dropdown-header text-muted">Manajemen Akun</h6></li>
                     <li><a class="dropdown-item py-2 item-profil" href="profil_admin.php"><i class="bi bi-person me-2 text-secondary"></i> Profil Saya</a></li>
                     <li><a class="dropdown-item py-2 text-danger" href="#" id="btnLogoutNavbar"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
                 </ul>

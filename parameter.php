@@ -14,7 +14,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Standarisasi Lingkungan - FloraMeans</title>
+    <title>Standarisasi Parameter Sensor - FloraMeans Admin</title>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
@@ -36,7 +36,7 @@
     <main id="main-content">
         <div class="container-fluid p-4 p-md-5">
             <?php  
-                ViewHelper::renderHeader("Standarisasi Parameter Kategori", "modalTambahParam"); 
+                ViewHelper::renderHeader("Standarisasi Parameter Sensor", "modalTambahParam"); 
             ?>
             <div class="card p-4 border-0 shadow-sm">
                 <div class="table-responsive">
