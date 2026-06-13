@@ -1,19 +1,20 @@
 <?php
     require_once 'auth.php';               
-    require_once 'tanaman_controller.php'; 
+    require_once 'daftar_tanaman_controller.php'; 
     require_once 'kategori_controller.php'; 
     require_once 'viewHelper.php';
 
     Auth::cekLoginAdmin(); 
 
     $tanamanObj = new Tanaman();
-    
-    if (isset($_GET['search']) && !empty($_GET['search'])) {
-        $keyword = $_GET['search'];
-        $dataTanaman = $tanamanObj->cari($keyword); 
-    } else {
-        $dataTanaman = $tanamanObj->tampilSemua(); 
-    }
+    $keyword    = isset($_GET['search']) && !empty($_GET['search']) ? $_GET['search'] : '';
+
+    // Menghitung total data untuk pagination
+    $totalData  = $tanamanObj->hitungTotal($keyword);
+    // Ambil data pagination
+    $pagination = ViewHelper::getPaginationData($totalData, 10);
+    // Ambil data sesuai halaman
+    $dataTanaman = $tanamanObj->cari($keyword, $pagination['perPage'], $pagination['offset']);
 
     $katObj = new Kategori();
     $dataKategori = $katObj->tampilSemua();
@@ -43,6 +44,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
+    <!-- CSS page -->
+    <?php ViewHelper::renderStyles(); ?>
 </head>
 <body>
     <div class="d-flex">
@@ -52,7 +55,7 @@
             <div class="container-fluid p-4 p-md-5">
                 <?php 
                     ViewHelper::renderHeader("Daftar Referensi Tanaman", "modalTambah", "Tambah Tanaman"); 
-                    ViewHelper::renderSearchBar("Cari nama tanaman atau sinonim..."); 
+                    ViewHelper::renderSearchBar("Cari nama atau kategori tanaman..."); 
                 ?>
 
                 <div class="card p-4 border-0">
@@ -69,7 +72,7 @@
                             </thead>
                             <tbody>
                                 <?php
-                                $no =1;
+                                $no = $pagination['offset'] + 1;
                                 if (mysqli_num_rows($dataTanaman) > 0 ){
                                     while ($row = mysqli_fetch_assoc($dataTanaman)){
                                 ?>
@@ -94,9 +97,7 @@
                                     </td>
                                 </tr>
                                 <?php
-                                    } 
-                                    // Menyimpan jumlah total data untuk info di bawah tabel
-                                    $totalData = $no - 1; 
+                                    }  
                                 } else {
                                     $totalData = 0;
                                     echo '<tr><td colspan="5" class="text-center py-5 text-muted italic">Belum ada data tanaman yang terdaftar.</td></tr>';
@@ -106,7 +107,7 @@
                             </table>
                         </div>
                     </div>
-                    <?php ViewHelper::renderTableFooter($totalData, "tanaman"); ?>
+                    <?php ViewHelper::renderTableFooter($totalData, "tanaman", $pagination); ?>
                 </div>
             </div>
         </main>
@@ -120,15 +121,15 @@
                     <h5 class="modal-title fw-bold">Tambah Tanaman Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form action="tanaman_controller.php" method="POST">
+                <form action="daftar_tanaman_controller.php" method="POST">
                     <div class="modal-body p-4">
                         <div class="mb-3">
-                            <label class="form-label">Nama Tanaman</label>
-                            <input type="text" class="form-control bg-light py-2" name="nama_tanaman" placeholder="Contoh: Lidah Buaya" required>
+                            <label class="form-label" for="tambah_nama_tanaman">Nama Tanaman</label>
+                            <input type="text" class="form-control bg-light py-2" id="tambah_nama_tanaman" name="nama_tanaman" placeholder="Contoh: Lidah Buaya" required>
                         </div>
                     <div class="mb-3">
                         <div class="d-flex justify-content-between">
-                            <label class="form-label">Sinonim (Nama Lain Tanaman)</label>
+                            <label class="form-label" for="tambah_sinonim">Sinonim (Nama Lain Tanaman)</label>
                             <span class="text-muted small">Opsional</span> </div>
                         
                         <input type="text" 
@@ -141,8 +142,8 @@
                         </div> 
                     </div>
                         <div class="mb-3">
-                            <label class="form-label">Kategori</label>
-                            <select name="id_kategori" class="form-select bg-light py-2" required>
+                            <label class="form-label" for="pilih_nama_kategori">Kategori</label>
+                            <select name="id_kategori" id="pilih_nama_kategori" class="form-select bg-light py-2" required>
                                 <option value="" selected disabled>-- Pilih Kategori --</option>
                                 <?php foreach($listKategori as $k): ?>
                                     <option value="<?= $k['id_kategori']; ?>"><?= $k['nama_kategori']; ?></option>
@@ -167,16 +168,18 @@
                     <h5 class="modal-title fw-bold">Edit Tanaman</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form action="tanaman_controller.php" method="POST">
+                <form action="daftar_tanaman_controller.php" method="POST">
                     <div class="modal-body p-4">
                         <input type="hidden" name="id_tanaman" id="edit_id">
+                        <!-- Waktu edit akan ke halaman tanaman yang di edit -->
+                        <input type="hidden" name="current_page" id="edit_current_page" value="<?= $pagination['currentPage']; ?>"> 
                         <div class="mb-3">
-                            <label class="form-label">Nama Tanaman</label>
-                            <input type="text" class="form-control  bg-light py-2" name="nama_tanaman" id="edit_nama" required>
+                            <label class="form-label" for="edit_nama_tanaman">Nama Tanaman</label>
+                            <input type="text" class="form-control  bg-light py-2" id="edit_nama_tanaman" name="nama_tanaman" required>
                         </div>
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
-                                <label class="form-label fw-bold">Sinonim (Nama Lain Tanaman)</label>
+                                <label class="form-label" for="edit_sinonim">Sinonim (Nama Lain Tanaman)</label>
                                 <span class="text-muted small">Opsional</span>
                             </div>
 
@@ -191,7 +194,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Kategori</label>
+                            <label class="form-label" for="edit_kategori">Kategori</label>
                             <select name="id_kategori" id="edit_kategori" class="form-select bg-light py-2" required>
                                 <option value="">-- Pilih Kategori --</option>
                                 <?php foreach($listKategori as $k): ?>
@@ -219,7 +222,6 @@
                 title: 'Berhasil!',
                 text: 'Tanaman berhasil ditambahkan',
                 icon: 'success',
-                confirmButtonColor: '#064e3b' 
             }).then(() => {
                 // Bersihkan parameter URL agar alert tidak muncul lagi saat refresh
                 window.history.replaceState({}, document.title, window.location.pathname);
@@ -240,7 +242,6 @@
             title: 'Berhasil!',
             text: 'Tanaman telah berhasil dihapus.',
             icon: 'success',
-            confirmButtonColor: '#064e3b' 
         }).then(() => {
             // Bersihkan parameter URL agar alert tidak muncul lagi saat refresh
             window.history.replaceState({}, document.title, window.location.pathname);
@@ -261,7 +262,7 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = `tanaman_controller.php?action=hapus&id_tanaman=${id_tanaman}`;
+                        window.location.href = `daftar_tanaman_controller.php?action=hapus&id_tanaman=${id_tanaman}`;
                     }
                 });
             });
@@ -276,7 +277,7 @@
                 const kategori = this.getAttribute('data-edit-kategori');
 
                 document.getElementById('edit_id').value = id;
-                document.getElementById('edit_nama').value = nama;
+                document.getElementById('edit_nama_tanaman').value = nama;
                 document.getElementById('edit_kategori').value = kategori;
 
                 const inputSinonim = document.getElementById('edit_sinonim');
@@ -292,7 +293,7 @@
         });
 
         if (pesan === 'sukses_edit') {
-            Swal.fire('Berhasil!', 'Kategori telah diperbarui.', 'success');
+            Swal.fire('Berhasil!', 'Tanaman berhasil diperbarui.', 'success');
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     </script>

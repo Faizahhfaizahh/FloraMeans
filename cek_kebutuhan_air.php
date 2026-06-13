@@ -1,6 +1,20 @@
 <?php
     require_once 'auth.php';
     Auth::cekLoginUser();
+
+    $authObj = new Auth();
+    $koneksi = (fn() => $this->conn)->call($authObj); //Memanggil conn pda database yang bersifat protected
+
+    $query = "SELECT DISTINCT nama_tanaman FROM tanaman ORDER BY nama_tanaman ASC";
+    $result = mysqli_query($koneksi, $query);
+
+    $daftar_tanaman = [];
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $daftar_tanaman[] = $row['nama_tanaman'];
+        }
+    }
+    
 ?>
 
 <!DOCTYPE html>
@@ -60,45 +74,45 @@
 
                             <form id="formClustering" action="proses_kmeans.php" method="POST">
                                 <div class="mb-4">
-                                    <label class="form-label fw-bold">Nama Tanaman</label>
-                                    <input type="text" class="form-control fborder-0 bg-light py-2 px-3 shadow-none rounded-3" name="nama_tanaman" placeholder="Contoh: Lidah Buaya" required>
+                                    <label class="form-label" for="tambah_nama_tanaman">Nama Tanaman</label>
+                                    <input type="text"  id="tambah_nama_tanaman" class="form-control fborder-0 bg-white py-2 px-3 shadow-none rounded-3" name="nama_tanaman" placeholder="Lidah Buaya" list="listTanaman" required>
+                                    <datalist id="listTanaman">
+                                        <?php foreach ($daftar_tanaman as $nama): ?>
+                                            <option value="<?= htmlspecialchars($nama); ?>">
+                                        <?php endforeach; ?>
+                                    </datalist>
                                 </div>
 
                                 <div class="row g-3">
                                     <div class="col-12 col-md-6 mb-2">
-                                        <label class="form-label small fw-bold text-muted text-uppercase">Suhu Udara (°C)</label>
+                                        <label class="form-label small" for="tambah_suhu_udara">Suhu Udara (°C)</label>
                                         <div class="input-group shadow-sm rounded-3">
                                             <span class="input-group-text bg-white border-end-0 "><i class="bi bi-thermometer-half"></i></span>
-                                            <input type="number" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="suhu_input" placeholder="30.00" required>
+                                            <input type="number" id="tambah_suhu_udara" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="suhu_input" placeholder="30 atau 30.5" required>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 mb-2">
-                                        <label class="form-label small fw-bold text-muted text-uppercase">Intensitas Cahaya (Lux)</label>
+                                        <label class="form-label small" for="tambah_intensitas_cahaya">Intensitas Cahaya (Lux)</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-white border-end-0"><i class="bi bi-sun"></i></span>
-                                            <input type="number" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="cahaya_input" placeholder="20000" required>
+                                            <input type="number" id="tambah_intensitas_cahaya" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="cahaya_input" placeholder="20000" required>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 mb-2">
-                                        <label class="form-label small fw-bold text-muted text-uppercase">Kelembapan Udara (%)</label>
+                                        <label class="form-label small" for="tambah_kelembapan_udara">Kelembapan Udara (%)</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-white border-end-0"><i class="bi bi-wind"></i></span>
-                                            <input type="number" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="lembab_udara_input" placeholder="60.0" required>
+                                            <input type="number" id="tambah_kelembapan_udara" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="lembab_udara_input" placeholder="60 atau 60.5" required>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 mb-2">
-                                        <label class="form-label small fw-bold text-muted text-uppercase">Kelembapan Tanah (%)</label>
+                                        <label class="form-label small" for="tambah_kelembapan_tanah">Kelembapan Tanah (%)</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-white border-end-0"><i class="bi bi-moisture"></i></span>
-                                            <input type="number" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="lembab_tanah_input" placeholder="45.0" required>
+                                            <input type="number" id="tambah_kelembapan_tanah" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="lembab_tanah_input" placeholder="45 atau 45.5" required>
                                         </div>
                                     </div>
                                 </div>
-                            <div class="mt-4 pt-2 border-top">
-                                <p class="text-center text-muted" style="font-size: 0.75rem;">
-                                    <i class="bi bi-info-circle me-1"></i> Gunakan titik (.) untuk angka desimal.
-                                </p>
-                            </div>
 
                                 <div class="mt-4">
                                     <button type="button" onclick="konfirmasiClustering()" class="btn btn-success w-100 fw-bold py-2 shadow-sm rounded-3 transition-all" style="background-color: #1a5c3d; border: none;">

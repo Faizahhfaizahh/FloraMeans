@@ -60,7 +60,7 @@
                             ?>
                             <tr>
                                 <td><?= $no++; ?></td>
-                                <td class="fw-bold text-success"><?= $row['nama_kategori']; ?></td>
+                                <td class="text-center text-dark"><?= $row['nama_kategori']; ?></td>
                                 <td class="text-center small text-muted">
                                     <?= $row['suhu_udara_min']; ?> - <?= $row['suhu_udara_max']; ?>
                                 </td>
@@ -82,7 +82,12 @@
                                         data-ltmin="<?= $row['lembab_tanah_min']; ?>" data-ltmax="<?= $row['lembab_tanah_max']; ?>"
                                         data-cmin="<?= $row['cahaya_min']; ?>" data-cmax="<?= $row['cahaya_max']; ?>"
                                         data-bs-toggle="modal" data-bs-target="#modalEditParam">
-                                        <i class="bi bi-sliders"></i> Atur
+                                        <i class="bi bi-sliders"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-light text-danger btn-hapus-param"
+                                        data-id="<?= $row['id_kategori']; ?>"
+                                        data-nama="<?= $row['nama_kategori']; ?>">
+                                        <i class="bi bi-trash3-fill"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -99,7 +104,7 @@
         </div>
     </main>
 </div>
-
+<!-- Tambah -->
 <div class="modal fade" id="modalTambahParam" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
@@ -110,8 +115,8 @@
                 </div>
                 <div class="modal-body p-4">
                     <div class="mb-2">
-                        <label class="form-label fw-bold">Pilih Kategori</label>
-                        <select name="id_kategori" class="form-select bg-light border-0" required>
+                        <label class="form-label fw-bold" for="pilih_kategori">Pilih Kategori</label>
+                        <select name="id_kategori" id="pilih_kategori" class="form-select bg-light border-0" required>
                             <option value="" selected disabled>-- Pilih Kategori --</option>
                             <?php 
                             $kategoriKosong = $paramObj->tampilKategoriKosong();
@@ -127,7 +132,7 @@
                     <?php
                     $params = [
                         ['id' => 'suhu_udara', 'label' => 'Suhu Udara', 'unit' => '°C', 'min' => 0, 'max' => 50, 'step' => 0.5, 'val_min' => 20, 'val_max' => 35],
-                        ['id' => 'cahaya', 'label' => 'Intensitas Cahaya', 'unit' => 'Lux', 'min' => 0, 'max' => 70000, 'step' => 500, 'val_min' => 5000, 'val_max' => 60000],
+                        ['id' => 'cahaya', 'label' => 'Intensitas Cahaya', 'unit' => 'Lux', 'min' => 0, 'max' => 150000, 'step' => 500, 'val_min' => 5000, 'val_max' => 150000],
                         ['id' => 'lembab_udara', 'label' => 'Kelembapan Udara', 'unit' => '%', 'min' => 0, 'max' => 100, 'step' => 1, 'val_min' => 40, 'val_max' => 80],
                         ['id' => 'lembab_tanah', 'label' => 'Kelembapan Tanah', 'unit' => '%', 'min' => 0, 'max' => 100, 'step' => 1, 'val_min' => 30, 'val_max' => 70],
                     ];
@@ -135,7 +140,7 @@
                     foreach ($params as $p):
                     ?>
                     <div class="mb-2">
-                        <label class="fw-bold mb-2 text-dark"><?= $p['label']; ?> (<?= $p['unit']; ?>)</label>
+                        <label class="fw-bold mb-2 text-dark" ><?= $p['label']; ?> (<?= $p['unit']; ?>)</label>
                         <div class="d-flex align-items-center gap-2">
                             <div class="text-center" style="min-width: 50px;">
                                 <small class="text-muted d-block" style="font-size: 9px;">MIN</small>
@@ -169,6 +174,7 @@
     </div>
 </div>
 
+<!-- Edit -->
 <div class="modal fade" id="modalEditParam" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
@@ -183,7 +189,7 @@
                     <?php
                     $paramsEdit = [
                         ['id' => 'suhu_udara', 'label' => 'Suhu Udara', 'unit' => '°C', 'min' => 0, 'max' => 50, 'step' => 0.5],
-                        ['id' => 'cahaya', 'label' => 'Intensitas Cahaya', 'unit' => 'Lux', 'min' => 0, 'max' => 70000, 'step' => 500],
+                        ['id' => 'cahaya', 'label' => 'Intensitas Cahaya', 'unit' => 'Lux', 'min' => 0, 'max' => 150000, 'step' => 500],
                         ['id' => 'lembab_udara', 'label' => 'Kelembapan Udara', 'unit' => '%', 'min' => 0, 'max' => 100, 'step' => 1],
                         ['id' => 'lembab_tanah', 'label' => 'Kelembapan Tanah', 'unit' => '%', 'min' => 0, 'max' => 100, 'step' => 1],
                     ];
@@ -294,13 +300,41 @@ document.querySelectorAll('.btn-edit-param').forEach(btn => {
     });
 });
 
+document.querySelectorAll('.btn-hapus-param').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const id   = this.dataset.id;
+        const nama = this.dataset.nama;
+        Swal.fire({
+            title: 'Hapus Parameter ' + nama + '?',
+            text: 'Kamu perlu mengisi ulang standarisasi untuk kategori ini setelah dihapus.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `parameter_controller.php?action=hapus&id=${id}`;
+            }
+        });
+    });
+});
+
 const urlParams = new URLSearchParams(window.location.search);
 if(urlParams.get('pesan') === 'sukses_edit') {
     Swal.fire({
         title: 'Berhasil!',
         text: 'Parameter lingkungan telah diperbarui.',
         icon: 'success',
-        confirmButtonColor: '#198754'
+    });
+    window.history.replaceState({}, document.title, window.location.pathname);
+}
+
+if (urlParams.get('pesan') === 'sukses_hapus') {
+    Swal.fire({
+        title: 'Berhasil!',
+        text: 'Parameter telah dihapus.',
+        icon: 'success',
     });
     window.history.replaceState({}, document.title, window.location.pathname);
 }

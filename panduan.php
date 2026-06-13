@@ -153,6 +153,12 @@
                         <p class="text-muted small mb-0" style="line-height: 1.7;">Kondisi lingkungan saat ini kurang cocok untuk tanaman tersebut. Pertimbangkan untuk menyesuaikan kondisi lingkungan tanamanmu.</p>
                     </div>
                 </div>
+                <div class="card border-0 shadow-sm rounded-3 p-3 status-card">
+                    <div class="d-flex align-items-start gap-3">
+                        <span class="badge rounded-pill fw-semibold flex-shrink-0 mt-1" style="background-color: #e2e8f0; color: #475569;">Tidak Diketehui</span>
+                        <p class="text-muted small mb-0" style="line-height: 1.7;">Nama tanaman belum terdaftar di referensi sistem. Kesesuaian lingkungan tidak dapat ditentukan.</p>
+                    </div>
+                </div>
             </div>
 
         </div>

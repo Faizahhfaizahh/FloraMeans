@@ -34,12 +34,12 @@
                             <form action="" method="POST" id="formLoginAdmin">
                                 <div class="mb-3">
                                     <label for="inputUsernameAdmin" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="inputUsernameAdmin">
+                                    <input type="text" class="form-control" id="inputUsernameAdmin" autocomplete="username">
                                 </div>
                                 <div class="mb-3">
                                     <label for="inputPasswordAdmin" class="form-label">Password</label>
                                     <div class="input-group">
-                                        <input type="password" class="form-control" id="inputPasswordAdmin">
+                                        <input type="password" class="form-control" id="inputPasswordAdmin"  autocomplete="current-password">
                                         <span class="input-group-text bg-white" id="togglePassword" style="cursor: pointer;">
                                             <i class="bi bi-eye" id="toggleIcon"></i>
                                         </span>

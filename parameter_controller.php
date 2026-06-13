@@ -46,6 +46,17 @@ class Parameter extends Database {
         
         return mysqli_query($this->conn, $query);
     }
+
+    public function hapus($id_kategori) {
+        $id_kategori = $this->escape($id_kategori);
+        $query = "UPDATE kategori SET 
+                    suhu_udara_min = 0, suhu_udara_max = 0,
+                    cahaya_min = 0, cahaya_max = 0,
+                    lembab_udara_min = 0, lembab_udara_max = 0,
+                    lembab_tanah_min = 0, lembab_tanah_max = 0
+                WHERE id_kategori = '$id_kategori'";
+        return mysqli_query($this->conn, $query);
+    }
 }
 
 $paramObj = new Parameter();
@@ -68,4 +79,15 @@ if (isset($_POST['btn_edit_parameter'])) {
     }
     exit;
 }
+
+if (isset($_GET['action']) && $_GET['action'] === 'hapus') {
+    $param = new Parameter();
+    if ($param->hapus($_GET['id'])) {
+        header("Location: parameter.php?pesan=sukses_hapus");
+    } else {
+        header("Location: parameter.php?pesan=gagal_hapus");
+    }
+    exit;
+}
+
 ?>

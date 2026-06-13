@@ -7,11 +7,12 @@ class Tanaman extends Database {
     }
 
     // Function untuk menampilkan semua tanaman yang ada
-    public function tampilSemua(){
+    public function tampilSemua($limit = 10, $offset = 0){
         $query = "SELECT tanaman.*, kategori.nama_kategori
                     FROM tanaman
                     LEFT JOIN kategori ON tanaman.id_kategori = kategori.id_kategori
-                    ORDER BY tanaman.id_tanaman DESC";
+                    ORDER BY tanaman.id_tanaman DESC
+                    LIMIT $limit OFFSET $offset";
         return mysqli_query($this->conn, $query);
     }
 
@@ -22,7 +23,7 @@ class Tanaman extends Database {
         $id_kategori = $this->escape($id_kategori);
 
         //Mengecek apakah nama tanaman sudah ada
-        $cek = mysqli_query($this->conn, "SELECT * FROM tanaman WHERE nama_tanaman = '$nama_tanaman'");
+        $cek = mysqli_query($this->conn, "SELECT * FROM tanaman WHERE LOWER(nama_tanaman) = LOWER('$nama_tanaman')");
         if (mysqli_num_rows($cek) > 0){
             return "duplikat";
         }
@@ -63,7 +64,7 @@ class Tanaman extends Database {
         return mysqli_query($this->conn, $query);
     }
 
-    public function cari($keyword = null) {
+    public function cari($keyword = null, $limit = 10, $offset = 0) {
         $query = "SELECT tanaman.*, kategori.nama_kategori 
                 FROM tanaman 
                 LEFT JOIN kategori ON tanaman.id_kategori = kategori.id_kategori";
@@ -71,11 +72,28 @@ class Tanaman extends Database {
         if ($keyword) {
             $keyword = $this->escape($keyword);
             $query .= " WHERE tanaman.nama_tanaman LIKE '%$keyword%' 
-                        OR tanaman.sinonim LIKE '%$keyword%'";
+                        OR tanaman.sinonim LIKE '%$keyword%'
+                        OR kategori.nama_kategori LIKE '%$keyword%'";
         }
         
-        $query .= " ORDER BY tanaman.id_tanaman DESC";
+        $query .= " ORDER BY tanaman.id_tanaman DESC LIMIT $limit OFFSET $offset";
         return mysqli_query($this->conn, $query);
+    }
+
+    public function hitungTotal($keyword = '') {
+        if (!empty($keyword)) {
+            $keyword = $this->escape($keyword);
+            $query = "SELECT COUNT(*) as total FROM tanaman t 
+                    LEFT JOIN kategori k ON t.id_kategori = k.id_kategori
+                    WHERE t.nama_tanaman LIKE '%$keyword%' 
+                        OR t.sinonim LIKE '%$keyword%'
+                        OR k.nama_kategori LIKE '%$keyword%'";
+        } else {
+            $query = "SELECT COUNT(*) as total FROM tanaman";
+        }
+        $result = mysqli_query($this->conn, $query);
+        $row    = mysqli_fetch_assoc($result);
+        return (int)$row['total'];
     }
 }
 
@@ -112,11 +130,12 @@ if (isset($_POST['btn_edit_tanaman'])) {
     $nama = $_POST['nama_tanaman'];
     $sinonim = $_POST['sinonim'];
     $id_kategori = $_POST['id_kategori'];
+    $page = isset($_POST['current_page']) ? (int)$_POST['current_page'] : 1;
 
     if ($tanaman->edit($id, $nama, $sinonim, $id_kategori)) {
-        header("Location: daftar_tanaman.php?pesan=sukses_edit");
+        header("Location: daftar_tanaman.php?pesan=sukses_edit&page=$page");
     } else {
-        header("Location: daftar_tanaman.php?pesan=gagal_edit");
+        header("Location: daftar_tanaman.php?pesan=gagal_edit&page=$page");
     }
     exit;
 }

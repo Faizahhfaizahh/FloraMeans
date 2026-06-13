@@ -6,12 +6,12 @@ class Pengguna extends Database {
         parent::__construct();
     }
 
-    public function tampilSemua(){
-        $query = "SELECT * FROM user ORDER BY id_user DESC";
+    public function tampilSemua($limit = 10, $offset = 0){
+        $query = "SELECT * FROM user ORDER BY id_user DESC LIMIT $limit OFFSET $offset";
         return mysqli_query($this->conn, $query);
     }
 
-    public function cari($keyword = null) {
+    public function cari($keyword = null, $limit = 10, $offset = 0) {
         $query = "SELECT * FROM user";
         
         if ($keyword) {
@@ -19,7 +19,7 @@ class Pengguna extends Database {
             $query .= " WHERE username LIKE '%$keyword%'";
         }
         
-        $query .= " ORDER BY id_user DESC";
+        $query .= " ORDER BY id_user DESC LIMIT $limit OFFSET $offset";
         return mysqli_query($this->conn, $query);
     }
 
@@ -27,6 +27,18 @@ class Pengguna extends Database {
         $id_user = $this->escape($id_user);
         $query = "DELETE FROM user WHERE id_user = '$id_user'";
         return mysqli_query($this->conn, $query);
+    }
+
+    public function hitungTotal($keyword = '') {
+        if (!empty($keyword)) {
+            $keyword = $this->escape($keyword);
+            $query = "SELECT COUNT(*) as total FROM user WHERE username LIKE '%$keyword%'";
+        } else {
+            $query = "SELECT COUNT(*) as total FROM user";
+        }
+        $result = mysqli_query($this->conn, $query);
+        $row    = mysqli_fetch_assoc($result);
+        return (int)$row['total'];
     }
 }
 

@@ -6,13 +6,13 @@
     Auth::cekLoginAdmin(); 
 
     $objPengguna = new Pengguna ();
-
-    if (isset($_GET['search']) && !empty($_GET['search'])) {
-        $keyword = $_GET['search'];
-        $dataPengguna = $objPengguna->cari($keyword); 
-    } else {
-        $dataPengguna = $objPengguna->tampilSemua(); 
-    }
+    $keyword    = isset($_GET['search']) && !empty($_GET['search']) ? $_GET['search'] : '';
+    // Menghitung total data untuk pagination
+    $totalData  = $objPengguna->hitungTotal($keyword);
+    // Ambil data pagination
+    $pagination = ViewHelper::getPaginationData($totalData, 10);
+    // Ambil data sesuai halaman
+    $dataPengguna = $objPengguna->cari($keyword, $pagination['perPage'], $pagination['offset']);
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +59,7 @@
                                 </thead>
                                     <tbody>
                                         <?php 
-                                        $no = 1;
+                                        $no = $pagination['offset'] + 1;
                                         if (mysqli_num_rows($dataPengguna) > 0) {
                                             while($row = mysqli_fetch_assoc($dataPengguna)) { 
                                             // Cek jika data dari database kosong atau bernilai 0000-00-00
@@ -78,8 +78,8 @@
                                         ?>
                                         <tr>
                                             <td class="ps-4 fw-medium text-dark"><?= $no++; ?></td>
-                                            <td><span class="fw-semibold text-dark "><?= htmlspecialchars($row['username']); ?></span></td>
-                                            <td class="fw-semibold text-dark" ><?= $tglRegistrasi; ?></td>
+                                            <td><span class=" text-dark "><?= htmlspecialchars($row['username']); ?></span></td>
+                                            <td class=" text-dark" ><?= $tglRegistrasi; ?></td>
                                             <td class="pe-4 text-end">
                                                 <button class="btn btn-light btn-sm text-danger border-0" 
                                                         onclick="konfirmasiHapus(<?= $row['id_user']; ?>)">
@@ -101,7 +101,7 @@
                         </div>
                     </div>
                 </div>
-                <?php ViewHelper::renderTableFooter($totalData, "pengguna"); ?>
+                <?php ViewHelper::renderTableFooter($totalData, "pengguna", $pagination); ?>
         </main>
     </div>
 
@@ -113,8 +113,7 @@
         Swal.fire({
             title: 'Berhasil!',
             text: 'Pengguna telah berhasil dihapus.',
-            icon: 'success',
-            confirmButtonColor: '#064e3b' 
+            icon: 'success'
         }).then(() => {
             // Bersihkan parameter URL agar alert tidak muncul lagi saat refresh
             window.history.replaceState({}, document.title, window.location.pathname);

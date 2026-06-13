@@ -1,32 +1,16 @@
 <?php
     require_once 'auth.php';
     require_once 'viewHelper.php';
-    Auth::cekLoginUser();
+    require_once 'riwayat_clustering_controller.php';
 
-        // Simulasi data (data dummy / data coba-coba)
-    $simulasi_riwayat = [
-        [
-            'id_riwayat' => 1,
-            'username' => 'rian12',
-            'nama_tanaman' => 'Kaktus Koboi',
-            'hasil_cluster' => 'Xerofit',
-            'status_tanaman' => 'ada', // 'ada' atau 'tidak' di daftar_tanaman
-            'kesesuaian' => 'Sesuai', // Hasil cek kecocokan parameter ideal
-            'waktu' => '17 Mei 2026',
-            // Data simulasi akan tampil di detail
-            'suhu' => '34°C', 'kelembapan_udara' => '40%', 'intensitas_cahaya' => '85%', 'kelembapan_tanah' => '15%'
-        ],
-        [
-            'id_riwayat' => 2,
-            'username' => 'ahmad_flora',
-            'nama_tanaman' => 'Sri Rejeki Meluber',
-            'hasil_cluster' => 'Mesofit',
-            'status_tanaman' => 'tidak', 
-            'kesesuaian' => 'Tidak Sesuai',
-            'waktu' => '16 Mei 2026',
-            'suhu' => '19°C', 'kelembapan_udara' => '85%', 'intensitas_cahaya' => '30%', 'kelembapan_tanah' => '80%'
-        ]
-    ];
+    Auth::cekLoginUser();
+    $id_user = $_SESSION['id_user'];
+    $keyword = isset($_GET['search']) && !empty($_GET['search']) ? $_GET['search'] : '';
+
+    $riwayatObj = new Riwayat();
+    $totalData  = $riwayatObj->hitungTotalRiwayatUser($id_user, $keyword);
+    $pagination = ViewHelper::getPaginationData($totalData, 10);
+    $simulasi_riwayat = $riwayatObj->cariRiwayatUser($id_user, $keyword, $pagination['perPage'], $pagination['offset']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,6 +31,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
+    <?php ViewHelper::renderStyles() ?>
 
 </head>
 <body class="bg-user-theme">
@@ -82,8 +67,9 @@
                             </thead>
                             <tbody>
                                 <?php
-                                $no = 1;
-                                foreach($simulasi_riwayat as $row) { 
+                                $no = $pagination['offset'] + 1;
+                                if ($totalData > 0) {
+                                    foreach($simulasi_riwayat as $row){
                                 ?>
                                 <tr>
                                     <td class="ps-4 fw-medium text-dark"><?= $no++; ?></td>
@@ -103,13 +89,17 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <?php if($row['kesesuaian'] == 'Sesuai'): ?>
+                                        <?php if($row['status_lingkungan'] == 'Sesuai'): ?>
                                             <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">
                                                 <i class="bi bi-check-circle-fill me-1"></i> Sesuai
                                             </span>
-                                        <?php else: ?>
+                                        <?php elseif($row['status_lingkungan'] == 'Tidak Sesuai'): ?>
                                             <span class="badge bg-danger-subtle text-danger-emphasis px-3 py-2 rounded-pill">
                                                 <i class="bi bi-exclamation-triangle-fill me-1"></i> Tidak Sesuai
+                                            </span>
+                                        <?php else: ?>
+                                            <span class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill">
+                                                <i class="bi bi-question-circle me-1 "></i> Tidak Diketahui
                                             </span>
                                         <?php endif; ?>
                                     </td>
@@ -141,13 +131,31 @@
                                                     <span class="fw-bold"><?= $row['hasil_cluster']; ?></span>
                                                 </div>
 
-                                                <div class="alert <?= $row['kesesuaian'] == 'Sesuai' ? 'alert-success border-success-subtle' : 'alert-danger border-danger-subtle' ?> d-flex align-items-center mb-4" role="alert">
-                                                    <i class="bi <?= $row['kesesuaian'] == 'Sesuai' ? 'bi-shield-check-fill' : 'bi-shield-exclamation-fill' ?> fs-4 me-3"></i>
-                                                    <div>
-                                                        <span class="fw-bold d-block">Status Kondisi Lingkungan:</span>
-                                                        Kondisi lingkungan saat ini <strong class="text-uppercase"><?= $row['kesesuaian']; ?></strong> untuk tanaman ini.
+                                                <?php if($row['status_lingkungan'] == 'Sesuai'): ?>
+                                                    <div class="alert alert-success border-success-subtle d-flex align-items-center mb-4" role="alert">
+                                                        <i class="bi bi-shield-check-fill fs-4 me-3"></i>
+                                                        <div>
+                                                            <span class="fw-bold d-block">Status Kondisi Lingkungan:</span>
+                                                            Kondisi lingkungan saat ini <strong>SESUAI</strong> untuk tanaman ini.
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                <?php elseif($row['status_lingkungan'] == 'Tidak Sesuai'): ?>
+                                                    <div class="alert alert-danger border-danger-subtle d-flex align-items-center mb-4" role="alert">
+                                                        <i class="bi bi-shield-exclamation-fill fs-4 me-3"></i>
+                                                        <div>
+                                                            <span class="fw-bold d-block">Status Kondisi Lingkungan:</span>
+                                                            Kondisi lingkungan saat ini <strong>TIDAK SESUAI</strong> untuk tanaman ini.
+                                                        </div>
+                                                    </div>
+                                                <?php else: ?>
+                                                    <div class="alert alert-secondary d-flex align-items-center mb-4" role="alert">
+                                                        <i class="bi bi-question-circle fs-4 me-3"></i>
+                                                        <div>
+                                                            <span class="fw-bold d-block">Status Kondisi Lingkungan:</span>
+                                                            Tanaman ini belum terdaftar di referensi sistem. Kesesuaian tidak dapat ditentukan.
+                                                        </div>
+                                                    </div>
+                                                <?php endif; ?>
 
                                                 <h6 class="fw-bold text-secondary mb-2" style="font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase;">Nilai Parameter Input</h6>
                                                 <div class="row g-2">
@@ -181,17 +189,47 @@
                                     </div>
                                 </div>
                                 <?php 
-                                } 
-                                $totalData = $no - 1; 
+                                    } 
+                                } else {
+                                    echo '<tr><td colspan="6" class="text-center py-5 text-muted"><em>Tidak ditemukan riwayat pengujian tanaman yang sesuai.</em></td></tr>';
+                                }
                                 ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        <?php ViewHelper::renderTableFooter($totalData, "riwayat"); ?>
+        <?php ViewHelper::renderTableFooter($totalData, "riwayat", $pagination); ?>
     </div>
 </main>
-    
+
+<script>
+    function konfirmasiHapus(id) {
+        Swal.fire({
+            title: 'Hapus Riwayat?',
+            text: 'Data riwayat clustering ini akan dihapus permanen.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `riwayat_clustering_controller.php?action=hapus&id=${id}&from=user`;
+            }
+        });
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('pesan') === 'sukses_hapus') {
+        Swal.fire({
+            title: 'Berhasil!',
+            text: 'Riwayat clustering telah dihapus.',
+            icon: 'success'
+        }).then(() => {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        });
+    }
+</script>
 </body>
 </html>

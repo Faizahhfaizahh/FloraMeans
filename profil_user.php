@@ -71,19 +71,19 @@
                                 <input type="hidden" name="action" value="updateProfile">
                                 <input type="hidden" name="role_form" value="user">
                                 <div class="mb-3">
-                                    <label class="form-label small fw-bold">Username</label>
+                                    <label class="form-label small fw-bold" for="username">Username</label>
                                     <div class="input-group">
-                                        <span class="input-group-text bg-light border-0"><i class="bi bi-person"></i></span>
-                                        <input type="text" class="form-control bg-light border-0" name="username" value="<?= htmlspecialchars($current_username); ?>" required>
+                                        <span class="input-group-text bg-white border-end-0 "><i class="bi bi-person"></i></span>
+                                        <input type="text" id="username" class="form-control bg-white  " name="username" value="<?= htmlspecialchars($current_username); ?>" autocomplete="username" required>
                                     </div>
                                 </div>
 
                                 <div class="mb-4">
                                     <label for="passwordBaru" class="form-label small fw-bold">Password Baru</label>
                                     <div class="input-group">
-                                        <span class="input-group-text bg-light border-0"><i class="bi bi-lock"></i></span>
-                                        <input type="password" class="form-control bg-light border-0 shadow-none" name="password" id="passwordBaru" placeholder="Isi jika ingin ganti">
-                                        <span class="input-group-text bg-light border-0" id="togglePassword" style="cursor: pointer;">
+                                        <span class="input-group-text bg-white border-end-0 "><i class="bi bi-lock"></i></span>
+                                        <input type="password" class="form-control bg-white border-end-0 shadow-none" name="password" id="passwordBaru" placeholder="Isi jika ingin ganti">
+                                        <span class="input-group-text bg-white  " id="togglePassword" style="cursor: pointer;">
                                             <i class="bi bi-eye" id="toggleIcon"></i>
                                         </span>
                                     </div>

@@ -95,8 +95,8 @@
                 <form action="kategori_controller.php" method="POST">
                     <div class="modal-body p-4">
                         <div class="mb-3">
-                            <label class="form-label">Nama Kategori</label>
-                            <input type="text" class="form-control bg-light py-2" name="nama_kategori" placeholder="Contoh: Xerofit" required>
+                            <label class="form-label" for="tambah_nama_kategori">Nama Kategori</label>
+                            <input type="text" class="form-control bg-light py-2" id="tambah_nama_kategori" name="nama_kategori" placeholder="Contoh: Xerofit" required>
                         </div>
                     </div>
                     <div class="modal-footer border-0">
@@ -120,8 +120,8 @@
                     <div class="modal-body p-4">
                         <input type="hidden" name="id_kategori" id="edit_id">
                         <div class="mb-3">
-                            <label class="form-label">Nama Kategori</label>
-                            <input type="text" class="form-control  bg-light py-2" name="nama_kategori" id="edit_nama" required>
+                            <label class="form-label" for="edit_nama_kategori">Nama Kategori</label>
+                            <input type="text" class="form-control  bg-light py-2" id="edit_nama_kategori" name="nama_kategori" id="edit_nama" required>
                         </div>
                     </div>
                     <div class="modal-footer border-0">
@@ -144,7 +144,6 @@
                 title: 'Berhasil!',
                 text: 'Kategori baru telah ditambahkan ke sistem FloraMeans.',
                 icon: 'success',
-                confirmButtonColor: '#064e3b' 
             }).then(() => {
                 // Bersihkan parameter URL agar alert tidak muncul lagi saat refresh
                 window.history.replaceState({}, document.title, window.location.pathname);
@@ -165,7 +164,6 @@
             title: 'Berhasil!',
             text: 'Kategori telah berhasil dihapus.',
             icon: 'success',
-            confirmButtonColor: '#064e3b' 
         }).then(() => {
             // Bersihkan parameter URL agar alert tidak muncul lagi saat refresh
             window.history.replaceState({}, document.title, window.location.pathname);
