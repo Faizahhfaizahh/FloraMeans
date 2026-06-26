@@ -22,12 +22,6 @@ class Dashboard extends Database {
         return mysqli_fetch_assoc($result)['total'];
     }
 
-    public function getTotalKategoriTerisi() {
-        $result = mysqli_query($this->conn, 
-            "SELECT COUNT(*) as total FROM kategori WHERE suhu_udara_max > 0");
-        return mysqli_fetch_assoc($result)['total'];
-    }
-
     public function getLingkunganSesuai($id_user) {
         $id_user = $this->escape($id_user);
         $result = mysqli_query($this->conn, "SELECT COUNT(*) as total FROM simulasi WHERE status_lingkungan = 'Sesuai' AND id_user = '$id_user'");

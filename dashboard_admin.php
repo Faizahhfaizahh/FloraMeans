@@ -7,7 +7,6 @@ $dashboardObj     = new Dashboard();
 $total_pengguna   = $dashboardObj->getTotalPengguna();
 $total_tanaman    = $dashboardObj->getTotalTanaman();
 $total_clustering = $dashboardObj->getTotalClustering();
-$total_kat_terisi = $dashboardObj->getTotalKategoriTerisi();
 $dataProporsiKategori = $dashboardObj->getProporsiKategoriAdmin();
 $semuaMingguan = $dashboardObj->getSemuaAktivitasMingguan();
 $semuaBulanan  = $dashboardObj->getSemuaAktivitasBulanan();
@@ -52,64 +51,61 @@ $dataTrenSensor = $tanamanDefault ? $dashboardObj->getTrenSensorTanaman(null, $t
                     <h4 class="fw-bold m-0 text-dark">Dashboard</h4>
                     <p class="text-muted small mt-1 mb-0">Selamat datang, <?= htmlspecialchars($nama_admin);?>! Berikut ringkasan sistem FloraMeans</p>
                  </div>
-                 <!-- Card -->
+                 <!-- Card dan Donut Chart -->
                 <div class="row g-4 mb-4">
-                    <!-- Total Pengguna -->
-                    <div class="col-12 col-sm-6 col-md-3">
+                    <div class="col-12 col-md-8">
                         <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" 
-                                    style="width: 56px; height: 56px; background-color: #dbeafe;">
-                                    <i class="bi bi-people-fill" style="color: #1e40af; font-size: 1.5rem;"></i>
+                            <h6 class="text-muted small fw-semibold mb-3">Statistik</h6>
+                            <div class="row g-3 align-items-center h-100">
+                                <!-- Total Pengguna -->
+                                <div class="col-12 col-sm-4 text-center">
+                                    <div class="d-inline-flex align-items-center gap-3">
+                                        <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                            style="width: 56px; height: 56px; background-color: rgba(30, 64, 175, 0.1);">
+                                            <i class="bi bi-people-fill" style="color: #1e40af; font-size: 2rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="fw-bold mb-0" style="font-size: 2rem;"><?= $total_pengguna; ?></h3>
+                                            <span class="text-muted small" style="font-size: 1rem;">Pengguna</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h2 class="fw-bold text-dark mb-0"><?= $total_pengguna; ?></h2>
-                                    <p class="text-muted small mb-0">Total Pengguna</p>
+                                <!-- Total Clustering -->
+                                <div class="col-12 col-sm-4 text-center">
+                                    <div class="d-inline-flex align-items-center gap-3">
+                                        <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                            style="width: 56px; height: 56px; background-color: rgba(133, 77, 14, 0.1);">
+                                            <i class="bi bi-graph-up" style="color: #854d0e; font-size: 2rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="fw-bold mb-0" style="font-size: 2rem;"><?= $total_clustering; ?></h3>
+                                            <span class="text-muted small" style="font-size: 1rem;">Clustering</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Total Tanaman -->
+                                <div class="col-12 col-sm-4 text-center">
+                                    <div class="d-inline-flex align-items-center gap-3">
+                                        <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                            style="width: 56px; height: 56px; background-color: rgba(22, 101, 52, 0.1);">
+                                            <i class="bi bi-flower1" style="color: #166534; font-size: 2rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="fw-bold mb-0" style="font-size: 2rem;"><?= $total_tanaman; ?></h3>
+                                            <span class="text-muted small" style="font-size: 1rem;">Tanaman</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Total Tanaman -->
-                    <div class="col-12 col-sm-6 col-md-3">
-                        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" 
-                                    style="width: 56px; height: 56px; background-color: #dcfce7;">
-                                    <i class="bi bi-flower1" style="color: #166534; font-size: 1.5rem;"></i>
-                                </div>
-                                <div>
-                                    <h2 class="fw-bold text-dark mb-0"><?= $total_tanaman; ?></h2>
-                                    <p class="text-muted small mb-0">Total Tanaman</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Total Clustering -->
-                    <div class="col-12 col-sm-6 col-md-3">
-                        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" 
-                                    style="width: 56px; height: 56px; background-color: #fef9c3;">
-                                    <i class="bi bi-graph-up" style="color: #854d0e; font-size: 1.5rem;"></i>
-                                </div>
-                                <div>
-                                    <h2 class="fw-bold text-dark mb-0"><?= $total_clustering; ?></h2>
-                                    <p class="text-muted small mb-0">Total Clustering</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Kategori Terisi -->
-                    <div class="col-12 col-sm-6 col-md-3">
-                        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" 
-                                    style="width: 56px; height: 56px; background-color: #f3e8ff;">
-                                    <i class="bi bi-sliders" style="color: #7e22ce; font-size: 1.5rem;"></i>
-                                </div>
-                                <div>
-                                    <h2 class="fw-bold text-dark mb-0"><?= $total_kat_terisi; ?>/4</h2>
-                                    <p class="text-muted small mb-0">Parameter Terisi</p>
+                    <!-- Donut Chart -->
+                    <div class="col-12 col-md-4">
+                        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 d-flex flex-column">
+                            <p class="text-muted small mb-2 fw-semibold">Kategori Terbanyak</p>
+                            <div class="flex-grow-1 d-flex align-items-center justify-content-center">
+                                <div style="position: relative; height:180px; width:100%">
+                                    <canvas id="pieKategoriChart"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +114,7 @@ $dataTrenSensor = $tanamanDefault ? $dashboardObj->getTrenSensorTanaman(null, $t
                 <!-- Grafik Tingkat 2 -->
                 <div class="row g-4 mb-4">
                     <!-- Grafik Aktivitas -->
-                    <div class="col-12 col-lg-8">
+                    <div class="col-12 col-lg-7">
                         <div class="card card-custom p-4 h-100 d-flex flex-column">
                             <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
                                 <div>
@@ -137,15 +133,33 @@ $dataTrenSensor = $tanamanDefault ? $dashboardObj->getTrenSensorTanaman(null, $t
                             </div>
                         </div>
                     </div>
-                    <!-- Pie Chart -->
-                    <div class="col-12 col-md-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 d-flex flex-column">
-                            <p class="text-muted small mb-2 fw-semibold">Kategori Terbanyak</p>
-                            <div class="flex-grow-1 d-flex align-items-center justify-content-center">
-                                <div style="position: relative; height:200px; width:100%">
-                                    <canvas id="pieKategoriChart"></canvas>
+                    <!-- Line Chart -->
+                    <div class="col-12 col-lg-5 ">
+                        <div class="card card-custom p-4 h-100">
+                            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                                <div>
+                                    <h5 class="fw-bold text-dark m-0">Tren Lingkungan Tanaman</h5>
                                 </div>
+                                <?php if (!empty($daftarTanaman)): ?>
+                                    <select class="form-select form-select-sm" id="pilihTanaman" style="width: auto; max-width: 180px;">
+                                        <?php foreach ($daftarTanaman as $t): ?>
+                                            <option value="<?= htmlspecialchars($t['nama']); ?>">
+                                                <?= htmlspecialchars($t['nama']); ?> (<?= $t['jumlah']; ?>x)
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                <?php endif; ?>
                             </div>
+                            <?php if (!empty($daftarTanaman)): ?>
+                                <div style="position: relative; height:280px; width:100%">
+                                    <canvas id="trenSensorChart"></canvas>
+                                </div>
+                            <?php else: ?>
+                                <div class="text-center py-5 text-muted">
+                                    <i class="bi bi-graph-up fs-1 d-block mb-2"></i>
+                                    <p class="mb-0 small">Belum ada data sensor.</p>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -170,37 +184,6 @@ $dataTrenSensor = $tanamanDefault ? $dashboardObj->getTrenSensorTanaman(null, $t
                             <div style="position: relative; height:320px; width:100%">
                                 <canvas id="scatterCahayaTanah"></canvas>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-4 mb-4">
-                    <!-- Line Chart -->
-                    <div class="col-12 ">
-                        <div class="card card-custom p-4 h-100">
-                            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
-                                <div>
-                                    <h5 class="fw-bold text-dark m-0">Tren Sensor per Tanaman</h5>
-                                </div>
-                                <?php if (!empty($daftarTanaman)): ?>
-                                    <select class="form-select form-select-sm" id="pilihTanaman" style="width: auto; max-width: 180px;">
-                                        <?php foreach ($daftarTanaman as $t): ?>
-                                            <option value="<?= htmlspecialchars($t['nama']); ?>">
-                                                <?= htmlspecialchars($t['nama']); ?> (<?= $t['jumlah']; ?>x)
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                <?php endif; ?>
-                            </div>
-                            <?php if (!empty($daftarTanaman)): ?>
-                                <div style="position: relative; height:280px; width:100%">
-                                    <canvas id="trenSensorChart"></canvas>
-                                </div>
-                            <?php else: ?>
-                                <div class="text-center py-5 text-muted">
-                                    <i class="bi bi-graph-up fs-1 d-block mb-2"></i>
-                                    <p class="mb-0 small">Belum ada data sensor.</p>
-                                </div>
-                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

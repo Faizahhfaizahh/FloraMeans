@@ -85,32 +85,32 @@
 
                                 <div class="row g-3">
                                     <div class="col-12 col-md-6 mb-2">
-                                        <label class="form-label small" for="tambah_suhu_udara">Suhu Udara (°C)</label>
-                                        <div class="input-group shadow-sm rounded-3">
-                                            <span class="input-group-text bg-white border-end-0 "><i class="bi bi-thermometer-half"></i></span>
-                                            <input type="number" id="tambah_suhu_udara" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="suhu_input" placeholder="30 atau 30.5" required>
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label small mb-0" for="tambah_suhu_udara"><i class="bi bi-thermometer-half me-1"></i>Suhu Udara (°C)</label>
+                                            <span class="badge bg-light text-dark border fw-semibold" id="label_suhu_udara">30.0</span>
                                         </div>
+                                        <input type="range" id="tambah_suhu_udara" class="form-range" name="suhu_input" min="0" max="60" step="0.1" value="30" oninput="document.getElementById('label_suhu_udara').textContent = this.value" required>
                                     </div>
                                     <div class="col-12 col-md-6 mb-2">
-                                        <label class="form-label small" for="tambah_intensitas_cahaya">Intensitas Cahaya (Lux)</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-white border-end-0"><i class="bi bi-sun"></i></span>
-                                            <input type="number" id="tambah_intensitas_cahaya" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="cahaya_input" placeholder="20000" required>
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label small mb-0" for="tambah_intensitas_cahaya"><i class="bi bi-sun me-1"></i>Intensitas Cahaya (Lux)</label>
+                                            <span class="badge bg-light text-dark border fw-semibold" id="label_intensitas_cahaya">20000</span>
                                         </div>
+                                        <input type="range" id="tambah_intensitas_cahaya" class="form-range" name="cahaya_input" min="0" max="130000" step="100" value="20000" oninput="document.getElementById('label_intensitas_cahaya').textContent = this.value" required>
                                     </div>
                                     <div class="col-12 col-md-6 mb-2">
-                                        <label class="form-label small" for="tambah_kelembapan_udara">Kelembapan Udara (%)</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-white border-end-0"><i class="bi bi-wind"></i></span>
-                                            <input type="number" id="tambah_kelembapan_udara" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="lembab_udara_input" placeholder="60 atau 60.5" required>
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label small mb-0" for="tambah_kelembapan_udara"><i class="bi bi-wind me-1"></i>Kelembapan Udara (%)</label>
+                                            <span class="badge bg-light text-dark border fw-semibold" id="label_kelembapan_udara">60.0</span>
                                         </div>
+                                        <input type="range" id="tambah_kelembapan_udara" class="form-range" name="lembab_udara_input" min="0" max="100" step="0.1" value="60" oninput="document.getElementById('label_kelembapan_udara').textContent = this.value" required>
                                     </div>
                                     <div class="col-12 col-md-6 mb-2">
-                                        <label class="form-label small" for="tambah_kelembapan_tanah">Kelembapan Tanah (%)</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-white border-end-0"><i class="bi bi-moisture"></i></span>
-                                            <input type="number" id="tambah_kelembapan_tanah" step="0.01" class="form-control border-start-0 py-2 shadow-none" name="lembab_tanah_input" placeholder="45 atau 45.5" required>
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label small mb-0" for="tambah_kelembapan_tanah"><i class="bi bi-moisture me-1"></i>Kelembapan Tanah (%)</label>
+                                            <span class="badge bg-light text-dark border fw-semibold" id="label_kelembapan_tanah">45.0</span>
                                         </div>
+                                        <input type="range" id="tambah_kelembapan_tanah" class="form-range" name="lembab_tanah_input" min="0" max="100" step="0.1" value="45" oninput="document.getElementById('label_kelembapan_tanah').textContent = this.value" required>
                                     </div>
                                 </div>
 

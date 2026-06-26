@@ -101,7 +101,7 @@ $dataTrenSensor = $tanamanDefault ? $dashboard->getTrenSensorTanaman($id_user, $
                             <i class="bi bi-check-circle-fill"></i>
                         </div>
                     </div>
-                    <div class="mt-2 text-muted small">Kondisi ideal untuk pertumbuhan</div>
+                    <div class="mt-2 text-muted small">Tanaman dalam kondisi optimal</div>
                 </div>
             </div>
             <!-- Lingkungan tidak sesuai -->
@@ -116,31 +116,7 @@ $dataTrenSensor = $tanamanDefault ? $dashboard->getTrenSensorTanaman($id_user, $
                             <i class="bi bi-x-circle-fill"></i>
                         </div>
                     </div>
-                    <div class="mt-2 text-muted small">Memerlukan penyesuaian parameter</div>
-                </div>
-            </div>
-        </div>
-        <!-- Grafik Scatter Plot -->
-        <div class="row g-4 mb-4">
-            <div class="col-12 col-lg-6">
-                <div class="card card-custom p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5 class="fw-bold text-dark m-0">Suhu vs Kelembapan Udara</h5>
-                    </div>
-                    <div style="position: relative; height:320px; width:100%">
-                        <canvas id="scatterSuhuKelembapan"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-lg-6">
-                <div class="card card-custom p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5 class="fw-bold text-dark m-0">Intensitas Cahaya vs Kelembapan Tanah</h5>
-                    </div>
-                    <div style="position: relative; height:320px; width:100%">
-                        <canvas id="scatterCahayaTanah"></canvas>
-                    </div>
+                    <div class="mt-2 text-muted small">Tanaman memerlukan penyesuaian</div>
                 </div>
             </div>
         </div>
@@ -170,7 +146,7 @@ $dataTrenSensor = $tanamanDefault ? $dashboard->getTrenSensorTanaman($id_user, $
                 <div class="card card-custom p-4 h-100">
                     <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
                         <div>
-                            <h5 class="fw-bold text-dark m-0">Tren Sensor per Tanaman</h5>
+                            <h5 class="fw-bold text-dark m-0">Tren Lingkungan Tanaman</h5>
                         </div>
                         <?php if (!empty($daftarTanaman)): ?>
                             <select class="form-select form-select-sm" id="pilihTanaman" style="width: auto; max-width: 180px;">
@@ -192,6 +168,30 @@ $dataTrenSensor = $tanamanDefault ? $dashboard->getTrenSensorTanaman($id_user, $
                             <p class="mb-0 small">Belum ada data sensor.</p>
                         </div>
                     <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <!-- Grafik Scatter Plot -->
+        <div class="row g-4 mb-4">
+            <div class="col-12 col-lg-6">
+                <div class="card card-custom p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="fw-bold text-dark m-0">Suhu vs Kelembapan Udara</h5>
+                    </div>
+                    <div style="position: relative; height:320px; width:100%">
+                        <canvas id="scatterSuhuKelembapan"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <div class="card card-custom p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="fw-bold text-dark m-0">Intensitas Cahaya vs Kelembapan Tanah</h5>
+                    </div>
+                    <div style="position: relative; height:320px; width:100%">
+                        <canvas id="scatterCahayaTanah"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
