@@ -173,6 +173,9 @@ $dataTrenSensor = $tanamanDefault ? $dashboardObj->getTrenSensorTanaman(null, $t
                             <div style="position: relative; height:320px; width:100%">
                                 <canvas id="scatterSuhuKelembapan"></canvas>
                             </div>
+                            <small class="text-muted d-block mt-3">
+                                Warna pekat = dekat centroid, warna pudar = jauh dari centroid.
+                            </small>
                         </div>
                     </div>
 
@@ -184,6 +187,9 @@ $dataTrenSensor = $tanamanDefault ? $dashboardObj->getTrenSensorTanaman(null, $t
                             <div style="position: relative; height:320px; width:100%">
                                 <canvas id="scatterCahayaTanah"></canvas>
                             </div>
+                            <small class="text-muted d-block mt-3">
+                                Warna pekat = dekat centroid, warna pudar = jauh dari centroid.
+                            </small>
                         </div>
                     </div>
                 </div>
@@ -346,27 +352,25 @@ $dataTrenSensor = $tanamanDefault ? $dashboardObj->getTrenSensorTanaman(null, $t
             const dataScatter  = <?php echo json_encode($dataScatter); ?>;
             const dataCentroid = <?php echo json_encode($dataCentroid); ?>;
 
-            function buatScatterChart(canvasId, dataTitik, dataCentroidSet, labelX, labelY) {
+            function buatScatterChart(canvasId, dataTitik, dataCentroidSet, labelX, labelY, rataJarak) {
                 const ctx = document.getElementById(canvasId).getContext('2d');
+                rataJarak = rataJarak || 50;
 
                 const kategoriList = ['Xerofit', 'Mesofit', 'Hidrofit', 'Higrofit'];
-                const warnaKategori = {
-                    'Xerofit': '#ca8a04',
-                    'Mesofit': '#166534',
-                    'Hidrofit': '#0891b2',
-                    'Higrofit': '#1e40af'
-                };
                 const titikOutlier = dataTitik.filter(d => d.outlier);
                 const datasetsKategori = kategoriList.map(kat => {
                     const titikKategori = dataTitik.filter(d => !d.outlier && d.kategori === kat);
                     return {
                         label: kat,
                         data: titikKategori.map(d => ({ x: d.x, y: d.y })),
-                        backgroundColor: warnaKategori[kat],
+                        backgroundColor: titikKategori.map(d => d.color),
                         pointRadius: 5,
-                        pointHoverRadius: 7
+                        pointHoverRadius: 7,
+                        // Simpan jarak per titik untuk dipakai di tooltip
+                        jarakList: titikKategori.map(d => d.jarak)
                     };
                 });
+
                 new Chart(ctx, {
                     type: 'scatter',
                     data: {
@@ -375,9 +379,10 @@ $dataTrenSensor = $tanamanDefault ? $dashboardObj->getTrenSensorTanaman(null, $t
                             {
                                 label: 'Outlier',
                                 data: titikOutlier.map(d => ({ x: d.x, y: d.y })),
-                                backgroundColor: '#dc2626',
+                                backgroundColor: titikOutlier.map(d => d.color),
                                 pointRadius: 7,
-                                pointHoverRadius: 9
+                                pointHoverRadius: 9,
+                                jarakList: titikOutlier.map(d => d.jarak)
                             },
                             {
                                 label: 'Centroid',
@@ -404,19 +409,34 @@ $dataTrenSensor = $tanamanDefault ? $dashboardObj->getTrenSensorTanaman(null, $t
                             tooltip: {
                                 callbacks: {
                                     label: function(context) {
+                                        const datasetLabel = context.dataset.label;
                                         const point = context.raw;
-                                        return `${labelX}: ${point.x}, ${labelY}: ${point.y}`;
+
+                                        if (datasetLabel === 'Centroid') {
+                                            return `Centroid ${dataCentroidSet[context.dataIndex].label}`;
+                                        }
+
+                                        const jarak = context.dataset.jarakList ? context.dataset.jarakList[context.dataIndex] : null;
+                                        let keterangan = '';
+
+                                        if (datasetLabel === 'Outlier') {
+                                            keterangan = '(jauh dari semua centroid)';
+                                        } else if (jarak !== null) {
+                                            keterangan = jarak < rataJarak ? '(dekat dengan centroid)' : '(agak jauh dari centroid)';
+                                        }
+
+                                        return `${labelX}: ${point.x}, ${labelY}: ${point.y} — Jarak: ${jarak ?? '-'} ${keterangan}`;
                                     }
                                 }
                             }
                         },
                         scales: {
                             x: {
-                                title: { display: true, text: labelX, font: { family: 'Poppins', size: 12} },
+                                title: { display: true, text: labelX, font: { family: 'Poppins', size: 12 } },
                                 grid: { color: '#f3f4f6' }
                             },
                             y: {
-                                title: { display: true, text: labelY, font: { family: 'Poppins', size: 12} },
+                                title: { display: true, text: labelY, font: { family: 'Poppins', size: 12 } },
                                 grid: { color: '#f3f4f6' }
                             }
                         }
@@ -433,21 +453,21 @@ $dataTrenSensor = $tanamanDefault ? $dashboardObj->getTrenSensorTanaman(null, $t
                     }]
                 });
             }
-            // Chart 1: Suhu vs Kelembapan Udara
             buatScatterChart(
                 'scatterSuhuKelembapan',
                 dataScatter.suhu_kelembapan,
                 dataCentroid.suhu_kelembapan,
                 'Suhu Udara (°C)',
-                'Kelembapan Udara (%)'
+                'Kelembapan Udara (%)',
+                dataScatter.rataJarak
             );
-            // Chart 2: Cahaya vs Kelembapan Tanah
             buatScatterChart(
                 'scatterCahayaTanah',
                 dataScatter.cahaya_tanah,
                 dataCentroid.cahaya_tanah,
                 'Intensitas Cahaya (Lux)',
-                'Kelembapan Tanah (%)'
+                'Kelembapan Tanah (%)',
+                dataScatter.rataJarak
             );
 
             // Tren Sensor per Tanaman

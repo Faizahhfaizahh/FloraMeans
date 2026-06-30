@@ -50,8 +50,6 @@ class Dashboard extends Database {
             $semua_jarak[] = (float)$row['jarak_centroid'];
         }
 
-        // Menghitung threshold outlier: rata-rata + 2 * standar deviasi
-        $is_outlier_map = [];
         if (count($semua_jarak) > 0) {
             $rata2 = array_sum($semua_jarak) / count($semua_jarak);
             $variansi = 0;
@@ -60,31 +58,51 @@ class Dashboard extends Database {
             }
             $std_dev = sqrt($variansi / count($semua_jarak));
             $threshold = $rata2 + (2 * $std_dev);
+            $jarakMin = min($semua_jarak);
+            $jarakMax = max($semua_jarak);
         } else {
             $threshold = 0;
+            $jarakMin = 0;
+            $jarakMax = 1;
         }
-        $warnaKategori = [
-            'Xerofit'  => '#ca8a04',
-            'Mesofit'  => '#166534',
-            'Hidrofit' => '#0891b2',
-            'Higrofit' => '#1e40af',
+
+        $warnaKategoriRGB = [
+            'Xerofit'  => [202, 138, 4],
+            'Mesofit'  => [22, 101, 52],
+            'Hidrofit' => [8, 145, 178],
+            'Higrofit' => [30, 64, 175],
         ];
 
-        $scatter_suhu_kelembapan = []; // Suhu vs Kelembapan Udara
-        $scatter_cahaya_tanah    = []; // Cahaya vs Kelembapan Tanah
+        $scatter_suhu_kelembapan = [];
+        $scatter_cahaya_tanah    = [];
+        $jarakNonOutlier = [];
 
         foreach ($titik_data as $t) {
             $jarak = (float)$t['jarak_centroid'];
             $kategori = trim($t['hasil_clustering']);
             $is_outlier = $jarak > $threshold;
 
-            $warna = $is_outlier ? '#dc2626' : ($warnaKategori[$kategori] ?? '#6b7280');
+            if (!$is_outlier) {
+                $jarakNonOutlier[] = $jarak;
+            }
+
+            $range = $jarakMax - $jarakMin;
+            $jarakNormal = $range > 0 ? ($jarak - $jarakMin) / $range : 0;
+            $opacity = $is_outlier ? 1.0 : max(0.3, 1.0 - $jarakNormal);
+
+            if ($is_outlier) {
+                $warna = 'rgba(220, 38, 38, 1)';
+            } else {
+                $rgb = $warnaKategoriRGB[$kategori] ?? [107, 114, 128];
+                $warna = "rgba({$rgb[0]}, {$rgb[1]}, {$rgb[2]}, " . round($opacity, 2) . ")";
+            }
 
             $scatter_suhu_kelembapan[] = [
                 'x' => (float)$t['suhu_input'],
                 'y' => (float)$t['lembab_udara_input'],
                 'kategori' => $kategori,
                 'outlier' => $is_outlier,
+                'jarak' => round($jarak, 2),
                 'color' => $warna,
             ];
             $scatter_cahaya_tanah[] = [
@@ -92,9 +110,12 @@ class Dashboard extends Database {
                 'y' => (float)$t['lembab_tanah_input'],
                 'kategori' => $kategori,
                 'outlier' => $is_outlier,
+                'jarak' => round($jarak, 2),
                 'color' => $warna,
             ];
         }
+
+        $rataJarak = !empty($jarakNonOutlier) ? array_sum($jarakNonOutlier) / count($jarakNonOutlier) : 0;
         return [
             'suhu_kelembapan' => $scatter_suhu_kelembapan,
             'cahaya_tanah'    => $scatter_cahaya_tanah,
@@ -102,6 +123,7 @@ class Dashboard extends Database {
             'total_outlier'   => count(array_filter($titik_data, function($t) use ($threshold) {
                 return (float)$t['jarak_centroid'] > $threshold;
             })),
+            'rataJarak' => round($rataJarak, 2),
         ];
     }
 
