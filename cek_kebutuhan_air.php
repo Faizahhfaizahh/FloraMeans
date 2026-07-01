@@ -140,7 +140,7 @@
                 Swal.fire({
                     icon: 'warning',
                     title: 'Data Belum Lengkap',
-                    text: 'Silakan isi semua variabel sensor agar klasifikasi K-Means dapat diproses.',
+                    text: 'Silakan isi semua data agar klasifikasi K-Means dapat diproses.',
                     customClass: { confirmButton: 'swal2-confirm-flora' }
                 });
                 return;
