@@ -23,7 +23,11 @@ $id_user            = $_SESSION['id_user'];
 // LANGKAH 2: Ambil data standarisasi sensor dari tabel kategori
 //            (ini yang menjadi centroid awal K-Means)
 // ============================================================
-$query_kategori = "SELECT * FROM kategori";
+$query_kategori = "SELECT * FROM kategori 
+    WHERE suhu_udara_max > 0
+    OR lembab_udara_max > 0
+    OR lembab_tanah_max > 0
+    OR cahaya_max > 0";
 $result_kategori = mysqli_query($conn, $query_kategori);
 
 $centroids = [];
