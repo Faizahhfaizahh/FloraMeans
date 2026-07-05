@@ -20,6 +20,26 @@ $lembab_tanah_input = round(floatval($_POST['lembab_tanah_input']), 2);
 $id_user            = $_SESSION['id_user'];
 
 // ============================================================
+// LANGKAH 1B: Validasi rentang wajar setiap variabel
+// ============================================================
+if ($suhu_input < 18 || $suhu_input > 45) {
+    header("Location: cek_kebutuhan_air.php?error=" . urlencode("Nilai suhu udara tidak wajar. Masukkan nilai antara 18°C - 45°C."));
+    exit;
+}
+if ($cahaya_input < 5000 || $cahaya_input > 120000) {
+    header("Location: cek_kebutuhan_air.php?error=" . urlencode("Nilai intensitas cahaya tidak wajar. Masukkan nilai antara 5.000 - 120.000 lux."));
+    exit;
+}
+if ($lembab_udara_input < 15 || $lembab_udara_input > 95) {
+    header("Location: cek_kebutuhan_air.php?error=" . urlencode("Nilai kelembapan udara tidak wajar. Masukkan nilai antara 15% - 95%."));
+    exit;
+}
+if ($lembab_tanah_input < 0 || $lembab_tanah_input > 100) {
+    header("Location: cek_kebutuhan_air.php?error=" . urlencode("Nilai kelembapan tanah tidak wajar. Masukkan nilai antara 0% - 100%."));
+    exit;
+}
+
+// ============================================================
 // LANGKAH 2: Ambil data standarisasi sensor dari tabel kategori
 //            (ini yang menjadi centroid awal K-Means)
 // ============================================================

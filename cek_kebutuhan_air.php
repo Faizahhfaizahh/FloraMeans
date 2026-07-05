@@ -127,6 +127,15 @@
         </div>
     </div>
     <script>
+        <?php if (isset($_GET['error'])): ?>
+            Swal.fire({
+                icon: 'error',
+                title: 'Data Tidak Wajar',
+                text: "<?= htmlspecialchars($_GET['error'], ENT_QUOTES) ?>",
+                customClass: { confirmButton: 'swal2-confirm-flora' }
+            });
+        <?php endif; ?>
+
         function konfirmasiClustering(){
             const form = document.getElementById('formClustering');
             const inputs = form.querySelectorAll('input[required]');
